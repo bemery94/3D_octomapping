@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- vim: ft=xml -->
+
+	<!-- Start each of the primary sensor nodes, if any fail should not start the main program -->
+
+	<!-- Start camera driver after delay -->
+	<!-- <node pkg="data_recorder" type="timed_roslaunch.sh" args="5 firefly_pgr firefly_pgr.launch" name="firefly_cam" output="screen"></node> -->
+
+	  <!-- nodelet manager process -->
+	  <node pkg="nodelet" type="nodelet" name="camera_nodelet_manager"
+        	args="manager" />
+
+	<!-- camera driver nodelet -->
+	<node pkg="nodelet" type="nodelet" name="camera1394_nodelet"
+        	args="load camera1394/driver camera_nodelet_manager">
+	        <rosparam file="$(find firefly_pgr)/launch/ffmv.yaml" />
+	</node>
+
+	<!-- arduino rosserial connection -->
+	<node pkg="rosserial_python" type="serial_node.py" name="rosserial_arduino" output="screen">
+		<param name="port" type="string" value="/dev/sb/io" />
+	</node>
+
+	<!-- IMU board -->
+	<node pkg="myahrs_plus_imu" type="myahrs_plus_imu_node" name="myahrs_imu" clear_params="true" output="screen" respawn="true"> </node>
+
+	<!-- Hokuyo Laser Scanner primary (used for localisation) -->
+	<node pkg="hokuyo_node" type="hokuyo_node" name="laser_lsl">
+		<param name="port" type="string" value="/dev/sb/ls_H1511089" />	
+		<param name="frame_id" type="string" value="laser_lsl" />
+		<remap from="/scan" to="/scan_lsl"/>
+	</node>
+
+	<!-- Hokuyo Laser Scanner secondary (used for mapping) -->
+	<node pkg="hokuyo_node" type="hokuyo_node" name="laser_lsm">
+		<param name="port" type="string" value="/dev/sb/ls_H1511087" />	
+		<param name="frame_id" type="string" value="laser_lsm" />
+		<remap from="/scan" to="/scan_lsm"/>
+	</node>
+	
+	<!-- Launch tf node - need to confirm the yaw, pitch and roll values -->
+	<!-- Transform for reference_point to laser scanner 1 - lsl -->
+	<!-- 0.035 0 0.085 Format of args x, y, z, yaw, pitch, roll -->
+	<node pkg="tf" type="static_transform_publisher" name="tf_base_laser_lsl"
+	args="-0.035 0 0.085 0 0 0 base laser_lsl 100" />
+	<node pkg="tf" type="static_transform_publisher" name="tf_base_laser_lsm"
+	args="-0.035 -0.085 0 -1.57 0 -1.57 base laser_lsm 100" />
+	<node pkg="tf" type="static_transform_publisher" name="tf_base_imu"
+	args="-0.08 0.065 0.03 -1.57 0 0 base imu 100" />
+	<node pkg="tf" type="static_transform_publisher" name="tf_base_cam"
+	args="0 0.065 0 0 0 0 base cam 100" />
+
+	<!-- Start the data recorder node -->
+	<node pkg="data_recorder" type="data_recorder_node" name="data_recorder" respawn="false" clear_params="true" output="screen"> </node>
+
+</launch>

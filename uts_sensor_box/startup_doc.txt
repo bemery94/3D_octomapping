@@ -1,0 +1,18 @@
+Startup sequence
+0) All system processes are booted, starts custom services
+1) Conf file is called from /etc/init/sb_service.conf
+2) Executes startup script found below
+
+Startup Script:
+/usr/sbin/sb_*
+start.sh - starts up the sensor box service
+stop.sh - closes the service appropriately
+rest not currently in use
+
+CONFIG file sets env variables used by above scripts found @ /etc/sb/setup.bash
+
+3) The start.sh script runs ~/ros/Indigo/src/uts_sensor_box/sb_run.sh
+4) sb_run script then calls launch script data_recorder.launch
+
+To kill auto-launch - modify sb_run.sh to not call the launch file
+(or go back up the chain and stop the service from running)

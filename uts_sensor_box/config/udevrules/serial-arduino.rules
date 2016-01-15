@@ -1,0 +1,1 @@
+ATTRS{manufacturer}=="Prolific Technology Inc.", ATTRS{idProduct}=="2303", ATTRS{idVendor}=="067b", SYMLINK+="sb/io", MODE="0666"

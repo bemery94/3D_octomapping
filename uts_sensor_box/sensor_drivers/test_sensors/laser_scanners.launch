@@ -1,0 +1,19 @@
+<launch>
+
+	<!-- vim: ft=xml -->
+
+	<!-- Hokuyo laser scanner primary (used for localisation) -->
+	<node pkg="hokuyo_node" type="hokuyo_node" name="laser_lsl">
+		<param name="port" type="string" value="/dev/sb/ls_H0902981" />
+		<param name="frame_id" type="string" value="laser_lsl" />
+		<remap from="scan" to="scan_lsl" />
+	</node>
+
+	<!-- Hokuyo laser scanner secondary (used for mapping) -->
+	<node pkg="hokuyo_node" type="hokuyo_node" name="laser_lsm">
+		<param name="port" type="string" value="/dev/sb/ls_H1002771" />
+		<param name="frame_id" type="string" value="laser_lsm" />
+		<remap from="scan" to="scan_lsm" />
+	</node>
+
+</launch>

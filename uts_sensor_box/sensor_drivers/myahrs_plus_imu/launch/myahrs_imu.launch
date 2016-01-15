@@ -1,0 +1,9 @@
+<launch>
+	<!-- vim: ft=xml -->
+
+	<node pkg="myahrs_plus_imu" type="myahrs_plus_imu_node" name="myahrs_imu" respawn="true" clear_params="true" output="screen"></node>
+
+        <node pkg="tf" type="static_transform_publisher" name="tf_base_imu"
+        args="0 0 0 0 0 0 base imu 100" />
+	
+</launch>

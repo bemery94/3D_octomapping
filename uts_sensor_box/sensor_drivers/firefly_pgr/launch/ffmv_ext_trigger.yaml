@@ -1,0 +1,12 @@
+{auto_brightness: 3, auto_exposure: 0, auto_focus: 5, auto_gain: 3,
+  auto_gamma: 0, auto_hue: 5, auto_iris: 5, auto_pan: 2, auto_saturation: 5, auto_sharpness: 5,
+  auto_shutter: 3, auto_trigger: 3, auto_white_balance: 5, auto_zoom: 5, bayer_method: '',
+  bayer_pattern: rggb, binning_x: 0, binning_y: 0, brightness: 255.0, camera_info_url: "package://firefly_pgr/launch/firefly_calib.yaml",
+  exposure: 0.0, external_trigger: true, focus: 0.0, format7_color_coding: mono8,
+  format7_packet_size: 0, frame_id: camera, frame_rate: 60, gain: 64.0,
+  gamma: 1.2000000000000002, guid: 00b09d0100da75ca, hue: 0.0, iris: 8.0, iso_speed: 400,
+  num_dma_buffers: 4, pan: 56.0, reset_on_open: false, roi_height: 0, roi_width: 0,
+  saturation: 1.0, sharpness: 1.0, shutter: 100.0, software_trigger: false,
+  time_offset: 0.0, trigger: 0.0, trigger_mode: mode_0, trigger_polarity: active_low,
+  trigger_source: source_0, use_ros_time: true, video_mode: 640x480_mono8, white_balance_BU: 512.0,
+  white_balance_RV: 512.0, x_offset: 0, y_offset: 0, zoom: 0.0}

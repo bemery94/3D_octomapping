@@ -1,0 +1,3 @@
+KERNEL=="ttyACM[0-9]*", ATTRS{manufacturer}=="Hokuyo Data Flex for USB", PROGRAM="/etc/ros/run.sh hokuyo_node getID /dev/%k -e", SYMLINK+="sb/ls_%c", MODE="0666"
+
+#udevadm info -a -p $(udevadm info -q path -n /dev/tty***)

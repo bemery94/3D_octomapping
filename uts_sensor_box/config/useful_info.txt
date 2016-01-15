@@ -1,0 +1,14 @@
+temperature: 
+/sys/devices/virtual/thermal/thermal_zone0/temp
+
+fan controls:
+/sys/devices/odroid_fan.14/fan_mode
+/sys/devices/odroid_fan.14/pwm_duty
+
+log files:
+upstart: /tmp/sensor_box.log
+sb_log: /home/odroid/log/sensor_box.log
+
+upstart scripts:
+/usr/sbin/sb_*
+/etc/init/sb_service.conf

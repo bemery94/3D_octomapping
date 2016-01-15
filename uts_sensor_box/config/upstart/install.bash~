@@ -1,0 +1,131 @@
+#!/bin/bash
+#
+# install.bash
+#
+# Copyright (c) 2013, Centre for Intelligent Mechatronics Systems, University of Technology, Sydney, Australia.
+# All rights reserved.
+#
+# This software was developed as a part of an industry based research project on Assistive Robotic Devices.
+#
+# Author: Liyang Liu
+# Date: 25/06/2013
+#
+# Rev History:
+#       0.0 - Liyang Liu
+#
+
+
+#
+# Run this as root, from the directory containing it!
+#
+# USAGE: sudo ./install.bash [<ip_address>] [<net_if>]
+#
+# where 
+# <ip_address> is the dedicated ip address of your host, and must be a value other than 127.0.0.1 for
+# communication with android tablet 
+# <net_if> is whatever network interface you want to set the robot
+# up for.  wlan0 is the default.
+#
+
+HOST_NAME=hoistpc
+USER_NAME=hoistpc
+USER_PASSWORD=hoistpc
+USER_HOME=/home/${USER_NAME}
+ros_setup_file=${USER_HOME}/SVN/Revision3/setup.bash
+ARF_LOG_FILE=${USER_HOME}/log/arf_hoist.log
+ARF_HOME=${USER_HOME}/IRT/SVN/arf_hoist
+STOP_ARF_FILE=/var/arf_hoist/stop.txt
+LAUNCH_PID_FILE=/var/arf_hoist/arf_launch_pid
+HOST_IFACE=eth0
+TABLET_IFACE=usb0
+TABLET_IP=192.168.42.129
+
+CONFIG_FILE=/etc/arf_hoist/setup.bash
+IP_ADDRESS=192.168.42.55
+#START_SERVICE_FILE=/usr/sbin/arf_start_bootstrap.sh
+
+launch_pid_dirname=`dirname $LAUNCH_PID_FILE`
+
+if [[ $# -eq 0 || "$1" == "" ]]; then
+    echo "Warning !!!, host ip address not given, use $IP_ADDRESS as master, may not communicate with android tablet" 
+else
+    IP_ADDRESS=$1
+    if [ $# -eq 2 ]; then
+        interface=$1
+    fi
+fi
+
+echo "Installing using network interface $interface."
+
+echo "Installing start, stop, service scripts ..."
+cp arf_start.sh  /usr/sbin/arf_start.sh
+chmod +x /usr/sbin/arf_start.sh
+
+cp arf_stop.sh  /usr/sbin/arf_stop.sh
+chmod +x /usr/sbin/arf_stop.sh
+
+cp arf_kill.sh /usr/sbin/arf_kill.sh
+chmod +x /usr/sbin/arf_kill.sh
+
+cp arf_shutdown.sh /usr/sbin/arf_shutdown.sh
+chmod +x /usr/sbin/arf_shutdown.sh
+
+cp arf_root_shutdown.sh /usr/sbin/arf_root_shutdown.sh
+chmod +x /usr/sbin/arf_root_shutdown.sh
+
+cp arf_bootstrap.sh /usr/sbin/arf_bootstrap.sh
+chmod +x /usr/sbin/arf_bootstrap.sh
+
+cp arf_reboot.sh /usr/sbin/arf_reboot.sh
+chmod +x /usr/sbin/arf_reboot.sh
+
+cp find_old.sh /usr/sbin/find_old.sh
+chmod +x /usr/sbin/find_old.sh
+
+cp arf_service.conf  /etc/init/arf_service.conf
+
+chmod a+x $ARF_HOME/arf_run.sh
+
+#cp "#!/bin/bash" > $START_SERVICE_FILE
+#cp "su $USER_NAME arf_start.sh" >> $START_SERVICE_FILE
+#chmod +x $START_SERVICE_FILE
+
+echo "Install device rules ..."
+cp ../udevrules/*.rules /etc/udev/rules.d/
+
+# create folders for runtime operation
+echo "Creating folders for runtime operation ..."
+
+mkdir -p ${USER_HOME}/log
+chown -R $USER_NAME ${USER_HOME}/log
+
+mkdir -p $launch_pid_dirname
+chown -R $USER_NAME $launch_pid_dirname
+
+# Copy files into /etc/ros/fuerte/hoist
+mkdir -p `dirname $CONFIG_FILE`
+#mkdir -p /etc/arf_hoist/fuerte
+# cat arf.launch > /etc/ros/fuerte/arf.launch
+
+#echo '. /opt/ros/fuerte/setup.bash; export ROS_PACKAGE_PATH=/home/hoistpc/ROS:${ROS_PACKAGE_PATH}' > /etc/ros/setup.bash
+echo "Creating configuration file at $CONFIG_FILE ..."
+
+echo -e "source ${ros_setup_file}\n" > $CONFIG_FILE
+echo -e "export ARF_HOME=${ARF_HOME}\n" >> $CONFIG_FILE
+echo -e "export STOP_ARF_FILE=${STOP_ARF_FILE}\n" >> $CONFIG_FILE
+echo -e "export ARF_LOG_FILE=${ARF_LOG_FILE}\n" >> $CONFIG_FILE
+echo -e "export USER_HOME=${USER_HOME}\n" >> $CONFIG_FILE
+echo -e "export HOST_NAME=${HOST_NAME}\n" >> $CONFIG_FILE
+echo -e "export LAUNCH_PID_FILE=${LAUNCH_PID_FILE}\n" >> $CONFIG_FILE
+echo -e "export USER_NAME=${USER_NAME}\n" >> $CONFIG_FILE
+echo -e "export USER_PASSWORD=${USER_PASSWORD}\n" >> $CONFIG_FILE
+echo -e "export HOST_IFACE=${HOST_IFACE}\n" >> $CONFIG_FILE
+echo -e "export TABLET_IFACE=${TABLET_IFACE}\n" >> $CONFIG_FILE
+echo -e "export TABLET_IP=${TABLET_IP}\n" >> $CONFIG_FILE
+
+if [ "$IP_ADDRESS" != "" ]; then
+    echo -e "$IP_ADDRESS    $HOST_NAME\n" >> /etc/hosts
+fi
+
+echo "Done installation !"
+

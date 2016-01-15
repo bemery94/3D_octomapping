@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1020/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart
+END
+arf_stop.sh
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_stop.sh
+END
+find_old.sh
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/find_old.sh
+END
+arf_reboot.sh
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_reboot.sh
+END
+arf_kill.sh
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_kill.sh
+END
+arf_service.conf
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_service.conf
+END
+arf_shutdown.sh
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_shutdown.sh
+END
+network_interfaces
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/network_interfaces
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/README
+END
+arf_bootstrap.sh
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_bootstrap.sh
+END
+arf_cleandisk.sh
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_cleandisk.sh
+END
+arf_start.sh
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_start.sh
+END
+arf_root_shutdown.sh
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1001/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/arf_root_shutdown.sh
+END
+install.bash
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/projects/cims/IRT-AssistiveRobotic/svn/!svn/ver/1020/Development/Hoist/Revision3/arf_hoist/arf_configure/upstart/install.bash
+END

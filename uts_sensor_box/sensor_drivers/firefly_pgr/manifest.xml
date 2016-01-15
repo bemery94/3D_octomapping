@@ -1,0 +1,22 @@
+<package>
+  <description brief="firefly_pgr">
+
+     omnisensor
+
+  </description>
+  <author>Siddhant Ahuja</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/firefly_pgr</url>
+
+  <depend package="sensor_msgs"/>
+  <depend package="opencv2"/>
+	<depend package="camera1394"/>
+  <depend package="cv_bridge"/>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="message_filters"/>
+</package>
+
+

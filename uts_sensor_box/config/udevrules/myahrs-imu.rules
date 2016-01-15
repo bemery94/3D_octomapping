@@ -1,0 +1,1 @@
+KERNEL=="ttyACM?", ATTRS{manufacturer}=="STMicroelectronics", ATTRS{idVendor}=="0483", SYMLINK+="sb/imu", MODE="0666"
