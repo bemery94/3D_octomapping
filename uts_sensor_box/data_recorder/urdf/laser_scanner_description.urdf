@@ -33,7 +33,14 @@
     <origin xyz="0 0.065 0" rpy="0 0 0" />
   </joint>
 
-    <joint name="stabilised_to_base_link" type="continuous">
+    <joint name="stabilised_to_base_link_roll" type="continuous">
+        <parent link="base_stabilized"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0" />
+    </joint>
+
+    <joint name="stabilised_to_base_link_pitch" type="continuous">
         <parent link="base_stabilized"/>
         <child link="base_link"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
