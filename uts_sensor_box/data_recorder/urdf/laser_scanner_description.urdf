@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot name="laser_scanner">
+  <link name="base_footprint" />
+  <link name="base_stabilized" />
+  <link name="base_link" />
+  <link name="laser_lsl" />
+  <link name="laser_lsm" />
+  <link name="imu" />
+  <link name="cam" />
+
+
+  <joint name="base_to_lsl" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_lsl"/>
+    <origin xyz="-0.035 0 0.085" rpy="0 0 0" />
+  </joint>
+
+  <joint name="base_to_lsm" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_lsm"/>
+    <origin xyz="-0.035 -0.085 0" rpy="-1.57 0 -1.57" />
+  </joint>
+
+  <joint name="base_to_imu" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu"/>
+    <origin xyz="-0.08 0.065 0.03" rpy="-1.57 0 0" />
+  </joint>
+
+  <joint name="base_to_cam" type="fixed">
+    <parent link="base_link"/>
+    <child link="cam"/>
+    <origin xyz="0 0.065 0" rpy="0 0 0" />
+  </joint>
+
+    <joint name="stabilised_to_base_link" type="continuous">
+        <parent link="base_stabilized"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0" />
+    </joint>
+
+  <joint name="footprint_to_stabilised" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_stabilized"/>
+    <origin xyz="0 0 0.5" rpy="0 0 0" />
+  </joint>
+
+</robot>
