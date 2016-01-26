@@ -11,7 +11,7 @@
          (roll and pitch) -->
     <arg name="gui" default="True" />
     <param name="use_gui" value="$(arg gui)"/>
-    <node name="scanner_oritentation_state_publisher" pkg="joint_state_publisher"
+    <node name="scanner_orientation_state_publisher" pkg="joint_state_publisher"
           type="joint_state_publisher" required="true" clear_params="true" />
 
 <!--    Start RVIZ with configuration file-->
