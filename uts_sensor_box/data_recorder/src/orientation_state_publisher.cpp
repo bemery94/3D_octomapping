@@ -84,11 +84,11 @@ void callback(const sensor_msgs::Imu::ConstPtr& msg)
 //    my_pub2.publish(array_2);
 
     // Store roll and pitch values in Orientation msg
-    orientation_val.roll = roll;
-    orientation_val.pitch = pitch;
-    orientation_val.yaw = yaw;
-
-    orientation_pub.publish(orientation_val);
+//    orientation_val.roll = roll;
+//    orientation_val.pitch = pitch;
+//    orientation_val.yaw = yaw;
+//
+//    orientation_pub.publish(orientation_val);
 }
 
 Eigen::Matrix<double,3,3> convQuatToRot(double x, double y, double z, double w)
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "orientation_state_publisher");
     ros::NodeHandle n;
     ros::Subscriber my_sub = n.subscribe<sensor_msgs::Imu>("myahrs_imu", 100, callback);
-    orientation_pub = n.advertise<data_recorder::Orientation("scanner_orientation", 100);
+    orientation_pub = n.advertise<sensor_msgs::JointState>("scanner_orientation", 100);
 //    my_pub1 = n.advertise<std_msgs::Float32MultiArray>("roll_and_pitch_out1", 100);
 //    my_pub2 = n.advertise<std_msgs::Float32MultiArray>("roll_and_pitch_out2", 100);
 //    my_pub_rot_mat = n.advertise<std_msgs::Float32MultiArray>("roll_and_pitch_out_rot_mat", 100);
