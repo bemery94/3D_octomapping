@@ -43,7 +43,7 @@ Thumbs.db
 *.bak
 *.swp
 *.pyc
-
+*~
 # ROS #
 #######
 cmake_install.cmake
