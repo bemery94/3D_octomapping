@@ -56,7 +56,7 @@
 
 <!-- Gives the pitch value of the scanner with respect to the stabilized position (i.e. flat) of the
      laser scanner -->
-    <joint name="scanner_orientation_roll_to_pitch" type="continuous">
+    <joint name="scanner_orientation_roll_to_pitch" type="fixed">
         <parent link="base_roll"/>
         <child link="base_pitch"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -65,7 +65,7 @@
 
 <!-- Gives the roll value of the scanner with respect to the stabilized position (i.e. flat) of the
      laser scanner -->
-    <joint name="stabilized_to_scanner_orientation_roll" type="continuous">
+    <joint name="stabilized_to_scanner_orientation_roll" type="fixed">
         <parent link="base_stabilized"/>
         <child link="base_roll"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
