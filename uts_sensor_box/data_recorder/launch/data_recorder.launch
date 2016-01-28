@@ -53,9 +53,6 @@
     <node name="scanner_orientation_state_publisher" pkg="joint_state_publisher"
           type="joint_state_publisher" required="true" clear_params="true" />
 
-<!--    Start RVIZ with configuration file-->
-    <node name="rviz" pkg="rviz" type="rviz" required="true"
-              args="--display-config $(find data_recorder)/rviz/data_recorder.rviz"/>
 
 	<!-- Start the data recorder node -->
 	<node pkg="data_recorder" type="data_recorder_node" name="data_recorder" respawn="false" clear_params="true" output="screen"> </node>
