@@ -50,11 +50,13 @@ include_directories(include  ${catkin_INCLUDE_DIRS}
 # )
 
 ## Declare a cpp executable
-add_executable(data_recorder_node 
+add_executable(data_recorder_node
 	src/data_rec.cpp
 	src/messages.cpp
   src/record.cpp
 )
+
+add_executable(orientation_state_publisher src/orientation_state_publisher.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -64,6 +66,8 @@ add_executable(data_recorder_node
 target_link_libraries(data_recorder_node
   ${catkin_LIBRARIES}
 )
+
+target_link_libraries(orientation_state_publisher ${catkin_LIBRARIES})
 
 #############
 ## Install ##
