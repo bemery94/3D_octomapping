@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="laser_scanner">
-  <link name="map" />
+  <!--link name="map" /-->
 <!-- The base_footprint frame is the position of the base_link projected vertically down to the
      ground with no rotation.-->
   <link name="base_footprint" />
@@ -79,9 +79,9 @@
     <origin xyz="0 0 0.5" rpy="0 0 0" />
   </joint>
 
-  <joint name="map_to_footprint" type="fixed">
+  <!--joint name="map_to_footprint" type="fixed">
       <parent link="map" />
       <child link="base_footprint" />
       <origin xyz="0 0 0" rpy="0 0 0" />
-  </joint>
+  </joint-->
 </robot>
