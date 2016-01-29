@@ -67,8 +67,6 @@ target_link_libraries(data_recorder_node
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(orientation_state_publisher ${catkin_LIBRARIES})
-
 #############
 ## Install ##
 #############
