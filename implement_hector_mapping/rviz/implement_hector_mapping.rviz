@@ -76,12 +76,12 @@ Visualization Manager:
       Length: 1
       Name: Axes
       Radius: 0.1
-      Reference Frame: base_link
+      Reference Frame: scanmatcher_frame
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: map
+    Fixed Frame: map_world_frame
     Frame Rate: 30
   Name: root
   Tools:
@@ -102,22 +102,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 15.7352
+      Distance: 8.64982
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.29515
-        Y: -2.39457
-        Z: 0.293172
+        X: -0.542852
+        Y: -0.23916
+        Z: -0.566201
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 1.0154
+      Pitch: 0.709798
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.675403
+      Yaw: 4.90857
     Saved: ~
 Window Geometry:
   Displays:
