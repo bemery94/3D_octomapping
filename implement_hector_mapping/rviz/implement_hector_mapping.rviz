@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Axes1
       Splitter Ratio: 0.5
     Tree Height: 775
   - Class: rviz/Selection
@@ -70,6 +71,13 @@ Visualization Manager:
       Shape: Arrow
       Topic: /slam_out_pose
       Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.1
+      Reference Frame: base_link
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -101,15 +109,15 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.158844
-        Y: -0.48015
-        Z: 0.451836
+        X: 1.29515
+        Y: -2.39457
+        Z: 0.293172
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 1.4404
+      Pitch: 1.0154
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.15358
+      Yaw: 0.675403
     Saved: ~
 Window Geometry:
   Displays:
