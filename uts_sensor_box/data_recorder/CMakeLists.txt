@@ -56,7 +56,6 @@ add_executable(data_recorder_node
   src/record.cpp
 )
 
-add_executable(orientation_state_publisher src/orientation_state_publisher.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
