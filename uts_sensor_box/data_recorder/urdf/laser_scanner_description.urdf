@@ -1,16 +1,5 @@
 <?xml version="1.0"?>
 <robot name="laser_scanner">
-<!-- The base_footprint frame is the position of the base_link projected vertically down to the
-     ground with no rotation.-->
-  <link name="base_footprint" />
-
-<!-- The base_stabilized frame is the position of the base_link with no rotation-->
-  <link name="base_stabilized" />
-
-<!-- Since the joints can be maximum 1DOF, we have to model the base_stabilized to base_link
-     transform as 2 single DOF joints (i.e. roll and pitch) -->
-  <link name="base_roll" />
-  <link name="base_pitch" />
 
 <!-- The base_link frame is the actual pose of the laser_scanner -->
   <link name="base_link" />
@@ -45,37 +34,6 @@
     <parent link="base_link"/>
     <child link="cam"/>
     <origin xyz="0 0.065 0" rpy="0 0 0" />
-  </joint>
-
-  <joint name="scanner_orientation_pitch_to_base_link" type="fixed">
-    <parent link="base_pitch"/>
-    <child link="base_link"/>
-    <origin xyz="0 0.065 0" rpy="0 0 0" />
-  </joint>
-
-<!-- Gives the pitch value of the scanner with respect to the stabilized position (i.e. flat) of the
-     laser scanner -->
-    <joint name="scanner_orientation_roll_to_pitch" type="fixed">
-        <parent link="base_roll"/>
-        <child link="base_pitch"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <axis xyz="0 1 0" />
-    </joint>
-
-<!-- Gives the roll value of the scanner with respect to the stabilized position (i.e. flat) of the
-     laser scanner -->
-    <joint name="stabilized_to_scanner_orientation_roll" type="fixed">
-        <parent link="base_stabilized"/>
-        <child link="base_roll"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <axis xyz="1 0 0" />
-    </joint>
-
-<!--Gives the transform between the footprint and the stabilized base. -->
-  <joint name="footprint_to_stabilised" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="base_stabilized"/>
-    <origin xyz="0 0 0.5" rpy="0 0 0" />
   </joint>
 
 </robot>
