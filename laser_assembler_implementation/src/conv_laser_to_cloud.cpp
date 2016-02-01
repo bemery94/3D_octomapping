@@ -26,6 +26,9 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "conv_laser_to_cloud");
     ros::NodeHandle n;
 
+    ros::Duration test;
+    test.sec = 100.0;
+    tf::TransformListener listener_(test);
 
     // Subscribers
     ros::Subscriber laser_scan_sub = n.subscribe<sensor_msgs::LaserScan>
@@ -43,9 +46,6 @@ int main(int argc, char** argv)
 */
 void laserScanCallBack(const sensor_msgs::LaserScan::ConstPtr& scan_in)
 {
-    ros::Duration test;
-    test.sec = 100.0;
-    tf::TransformListener listener_(test);
     sensor_msgs::PointCloud cloud;
     laser_geometry::LaserProjection projector_;
 
