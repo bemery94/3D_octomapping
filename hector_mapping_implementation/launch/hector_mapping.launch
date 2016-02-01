@@ -2,7 +2,7 @@
 <launch>
     <!--    Start RVIZ with configuration file-->
         <node name="rviz" pkg="rviz" type="rviz" required="true"
-                 args="--display-config $(find implement_hector_mapping)/rviz/implement_hector_mapping.rviz"/>
+                 args="--display-config $(find hector_mapping_implementation)/rviz/implement_hector_mapping.rviz"/>
 
     <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
 
