@@ -15,3 +15,7 @@ This package produces a 2D map of the surrounding environment using the horizont
 * ```laser_assembler_implementation```
 
 This package produces a 3D map of the surrounding environment using the vertical laser scanner.
+
+* ```master_laser_scanner```
+
+This package provides a single launch file that can run all of the data processing/mapping functionality.
