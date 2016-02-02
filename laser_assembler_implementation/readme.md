@@ -22,5 +22,5 @@ Brendan.Emery@student.uts.edu.au
 There are no known bugs. Please report bugs and request features by emailing the author.
 
 [ROS]: http://www.ros.org
-[sensor_msgs/PointCloud](http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud.html) 
-[sensor_msgs/PointCloud2](http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html)
+[sensor_msgs/PointCloud]: http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud.html
+[sensor_msgs/PointCloud2]: http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html
