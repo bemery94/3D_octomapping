@@ -6,7 +6,7 @@ The hector_mapping_implementation package runs the [hector_mapping](http://wiki.
  
 The hector_mapping_implementation package has been tested under [ROS] Indigo and Ubuntu 14.04. This is research code, expect that it changes often and any fitness for a particular purpose is disclaimed.
 
-**Authors: **
+**Authors:**
 
 Brendan Emery
 
