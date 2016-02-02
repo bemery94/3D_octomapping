@@ -25,7 +25,7 @@ This package provides a single launch file that can run all of the data processi
 In order to install, clone the latest version from this repository into your catkin workspace and compile using:
 
     cd catkin_workspace/src
-    git clone git@codeine.research.uts.edu.au:b.emery94/laser_scanner.git
+    git clone https://codeine.research.uts.edu.au/b.emery94/laser_scanner.git
     cd ../
     catkin_make
 
