@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find hector_mapping_implementation)/launch/hector_mapping.launch" />
+
+    <include file="$(find laser_assembler_implementation)/launch/laser_assembler.launch" />
+</launch>
