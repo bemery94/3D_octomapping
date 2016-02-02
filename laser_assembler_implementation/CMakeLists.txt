@@ -13,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(PCL 1.3 REQUIRED COMPONENTS common io)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -119,6 +119,10 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_LIBRARY_DIRS})
+
 ## Declare a C++ library
 # add_library(laser_assembler_implementation
 #   src/${PROJECT_NAME}/laser_assembler_implementation.cpp
@@ -148,7 +152,7 @@ target_link_libraries(call_laser_assembler_srv
 )
 
 target_link_libraries(conv_cloud_to_cloud2
-   ${catkin_LIBRARIES}
+    ${catkin_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES}
 )
 #############
 ## Install ##
