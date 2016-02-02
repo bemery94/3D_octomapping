@@ -2,7 +2,7 @@
   <node type="point_cloud_assembler" pkg="laser_assembler"
         name="my_assembler">
     <remap from="cloud" to="/point_cloud_out"/>
-    <param name="max_clouds" type="int" value="400" />
+    <param name="max_clouds" type="int" value="2000" />
     <param name="fixed_frame" type="string" value="/map_world_frame" />
   </node>
 </launch>
