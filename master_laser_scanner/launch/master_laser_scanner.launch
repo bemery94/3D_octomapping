@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <launch>
+
+    <!--    Start RVIZ with configuration file-->
+    <node name="rviz" pkg="rviz" type="rviz" required="true"
+          args="--display-config $(find master_laser_scanner)/rviz/implement_hector_mapping.rviz"/>
+
+
     <include file="$(find hector_mapping_implementation)/launch/hector_mapping.launch" />
 
     <include file="$(find laser_assembler_implementation)/launch/laser_assembler.launch" />
