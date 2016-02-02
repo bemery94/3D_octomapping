@@ -131,6 +131,8 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(conv_laser_to_cloud src/conv_laser_to_cloud.cpp)
+add_executable(call_laser_assembler_srv src/call_laser_assembler_srv.cpp)
+add_executable(conv_cloud_to_cloud2 src/conv_cloud_to_cloud2.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -141,6 +143,13 @@ target_link_libraries(conv_laser_to_cloud
    ${catkin_LIBRARIES}
 )
 
+target_link_libraries(call_laser_assembler_srv
+   ${catkin_LIBRARIES}
+)
+
+target_link_libraries(conv_cloud_to_cloud2
+   ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############
