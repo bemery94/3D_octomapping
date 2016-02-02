@@ -19,3 +19,14 @@ This package produces a 3D map of the surrounding environment using the vertical
 * ```master_laser_scanner```
 
 This package provides a single launch file that can run all of the data processing/mapping functionality.
+
+### Building
+
+In order to install, clone the latest version from this repository into your catkin workspace and compile using:
+
+    cd catkin_workspace/src
+    git clone git@codeine.research.uts.edu.au:b.emery94/laser_scanner.git
+    cd ../
+    catkin_make
+
+Note. This will clone the entire workspace.
