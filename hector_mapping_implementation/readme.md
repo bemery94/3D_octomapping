@@ -2,7 +2,7 @@
 
 ## Overview
 
-The hector_mapping_implementation package runs the [hector_mapping](http://wiki.ros.org/hector_mapping) package which performs 2D SLAM. The hector mapping node subscribes to the laser scans from the horizontal laser (i.e. laser_lsl) and it publishes a 2D map and the robots pose relative to a fixed map frame. The pose of the robot is then used by the laser_assembler_implementation package for 3D mapping.
+The hector_mapping_implementation package runs the [hector_mapping](http://wiki.ros.org/hector_mapping) package which performs 2D SLAM. The hector mapping node subscribes to the laser scans from the horizontal laser (i.e. laser_lsl) and it publishes a 2D map and the robot's pose relative to a fixed map frame. The pose of the robot is then used by the laser_assembler_implementation package for 3D mapping.
  
 The hector_mapping_implementation package has been tested under [ROS] Indigo and Ubuntu 14.04. This is research code, expect that it changes often and any fitness for a particular purpose is disclaimed.
 
