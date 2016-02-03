@@ -7,9 +7,9 @@
 
 
 /** @file conv_laser_to_cloud.cpp
- *  @brief Subscribes to a LaserScan message and publishes a PointCloud message.
+ *  @brief Subscribes to a LaserScan message and publishes a PointCloud message in the map_world_frame.
  *
-    *
+ *
  *  @author Brendan Emery
  *  @date Jan 2016
  *  @version 1.0.0
