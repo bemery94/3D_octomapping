@@ -54,7 +54,7 @@
     </node>
 
 <!--    Publish TF between base_stabilized and base footprint-->
-    <node pkg="tf" type="static_transform_publisher" name="base_stab_to_footprint_broadcaster" args="0 0 7 0 0 0 1 base_footprint base_stabilized 40" />
+    <node pkg="tf" type="static_transform_publisher" name="base_stab_to_footprint_broadcaster" args="0 0 7 0 0 0 1 base_footprint base_stabilized 20" />
 
 
 	<!-- Start the data recorder node -->
