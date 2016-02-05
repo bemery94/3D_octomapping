@@ -34,7 +34,7 @@ int main(int argc, char** argv)
                                       ("laser_scan_in", 100, laserScanCallBack);
 
     // Publishers
-    point_cloud_pub = n.advertise<sensor_msgs::PointCloud>("point_cloud_out", 100);
+    point_cloud_pub = n.advertise<sensor_msgs::PointCloud>("laser_to_cloud_out", 100);
 
     ros::spin();
 }

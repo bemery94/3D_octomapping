@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     ros::service::waitForService("assemble_scans");
     ros::ServiceClient client = n.serviceClient<AssembleScans>("assemble_scans");
 
-    ros::Publisher my_pub = n.advertise<sensor_msgs::PointCloud>("point_cloud_publisher", 10);
+    ros::Publisher my_pub = n.advertise<sensor_msgs::PointCloud>("assembled_cloud_out", 10);
 
     AssembleScans srv;
     ros::Rate loop_rate(10);
