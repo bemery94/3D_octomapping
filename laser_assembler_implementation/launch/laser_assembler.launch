@@ -17,7 +17,7 @@
         pkg="laser_assembler_implementation">
         <remap from="cloud_in" to="assembled_cloud_out" />
         <remap from="cloud2_out" to="assembled_cloud2_out" />
-
+    </node>
 
 <node type="conv_laser_to_cloud" name="conv_laser_to_cloud" pkg="laser_assembler_implementation">
     <remap from="laser_scan_in" to="/scan_lsm"/>
