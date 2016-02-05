@@ -7,7 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /Axes1
-        - /PointCloud1
+        - /PointCloud21
       Splitter Ratio: 0.5
     Tree Height: 775
   - Class: rviz/Selection
@@ -28,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud
+    SyncSource: PointCloud2
 Visualization Manager:
   Class: ""
   Displays:
@@ -87,7 +87,7 @@ Visualization Manager:
         Value: true
       Axis: Z
       Channel Name: intensity
-      Class: rviz/PointCloud
+      Class: rviz/PointCloud2
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
@@ -97,14 +97,14 @@ Visualization Manager:
       Max Intensity: 4096
       Min Color: 0; 0; 0
       Min Intensity: 0
-      Name: PointCloud
+      Name: PointCloud2
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.01
       Style: Flat Squares
-      Topic: /point_cloud_publisher
+      Topic: /cloud_to_cloud2_out
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
