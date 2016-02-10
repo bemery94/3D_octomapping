@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>laser_assembler_implementation</name>
+  <name>laser_conversions</name>
   <version>0.0.0</version>
-  <description>The laser_assembler_implementation package</description>
+  <description>The laser_assembler_conversions package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
