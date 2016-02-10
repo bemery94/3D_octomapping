@@ -42,4 +42,7 @@ To do:
 
     - Look into filtering laser scans
         * The laser_filter ros package can be used for this. Should test to see if it improves the map. 
+
+==> Miscellaneous
+    - Update documentation to include new package names and content 
 Done:
