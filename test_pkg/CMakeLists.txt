@@ -123,24 +123,16 @@ add_definitions(${PCL_LIBRARY_DIRS})
 # add_dependencies(test_pkg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(test_client src/call_services.cpp)
-add_executable(conv_cloud_to_cloud2 src/conv_cloud_to_cloud2.cpp)
-add_executable(conv_laser_to_cloud src/conv_laser_to_cloud.cpp)
+add_executable(conv_laser_to_cloud_test src/conv_laser_to_cloud_test.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(test_pkg_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_dependencies(test_client laser_assembler_generate_messages_cpp)
-add_dependencies(test_client laser_assembler_generate_services_cpp)
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(test_client
-   ${catkin_LIBRARIES}
- )
 
-target_link_libraries(conv_cloud_to_cloud2 ${catkin_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES})
-target_link_libraries(conv_laser_to_cloud ${catkin_LIBRARIES})
+target_link_libraries(conv_laser_to_cloud_test ${catkin_LIBRARIES})
 
 ## Install ##
 #############
