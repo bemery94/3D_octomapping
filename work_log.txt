@@ -1,32 +1,45 @@
-Work Log - Brendan Emery January-April 2016
+﻿Work Log - Brendan Emery January-April 2016
 
 To do:
-- Fix IMU:
+==> Fix IMU:
     - Talk to Dave to confirm that we are using the new IMU that we purchased.
-        - Dave said that we are using the latest IMU.
+        * Dave said that we are using the latest IMU.
+
     - Calibrate IMU to try and correct yaw values.
-        - Calibration was completed and the yaw values didn't seem too bad in the windows program. The yaw values drifted however they seemed to converge on an approximately correct value. This may indicate that there is an issue with the ros pkg currently being used on the robot.
+        * Calibration was completed and the yaw values didn't seem too bad in the windows program. The yaw values drifted however they seemed to converge on an approximately correct value. This may indicate that there is an issue with the ros pkg currently being used on the robot.
+
     - Upgrade the MyAhrs+ ros pkg.
-        - Dave mentioned that there was a more recent package available that we can test.
+        * Dave mentioned that there was a more recent package available that we can test.
+
     - Test new IMU.
-        - If the above steps don't fix the issue, I will try to use Laki's IMU. They were using a custom package so it may not be trivial to integrate it into our system, so this will be a last resort.
+        * If the above steps don't fix the issue, I will try to use Laki's IMU. They were using a custom package so it may not be trivial to integrate it into our system, so this will be a last resort.
 
-- Mapping
+    - Replace hector_imu_attitude_to_tf package with custom tf listener/broadcaster node.
+        * The package that I was using to publish the roll and pitch values required the imu to have the same orientation as the base_link. Since the IMU will have a different orientation, I will have to manually write a node to publish the tf between the base_link and base_stabilized frames using the imu values.
+
+
+==> Mapping
     - Merge the horizontal and vertical laser scans to be used in octomapping.
-        - The laser assembler ros package should have the capablility to do this. I remember reading about someone that did something similar.  If not, I might be able to use the PCL library to manually join the scans.
-    - Look into different methods to produce virtual odometry that can be passed into the hector mapping node.
-        - The main 3 to look into are ICP, NDT and visual odometry.
+        * The laser assembler ros package should have the capablility to do this. I remember reading about someone that did something similar.  If not, I might be able to use the PCL library to manually join the scans.
 
-- Additional testing
+    - Look into different methods to produce virtual odometry that can be passed into the hector mapping node.
+        * The main 3 to look into are ICP, NDT and visual odometry.
+
+
+==> Additional testing
     - Work with Maani to collect data for his bluetooth localisation.
-        - Maani said he would like to proceed with this once the IMU is working and in a cleaner room where we can get a better 2D map. He said that he wants to do it ASAP so we may have to take the scans without the IMU if it is still an issue.
+        * Maani said he would like to proceed with this once the IMU is working and in a cleaner room where we can get a better 2D map. He said that he wants to do it ASAP so we may have to take the scans without the IMU if it is still an issue.
+
     - Take more tests of rooms and hallways.
-        - Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
+        * Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
+
     - Take tests holding the robot and moving it in a wave-like motion to test the effectiveness of the IMU and how this effects 2D and 3D mapping.
 
-- Laser scans
+
+==> Laser scans
     - Increase scan distance of laser scanners.
-        - This should improve the hector mapping and allow us to scan hallways/longer rooms.
+        * This should improve the hector mapping and allow us to scan hallways/longer rooms.
+
     - Look into filtering laser scans
-        - The laser_filter ros package can be used for this. Should test to see if it improves the map. 
+        * The laser_filter ros package can be used for this. Should test to see if it improves the map. 
 Done:
