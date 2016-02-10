@@ -14,8 +14,6 @@ To do:
 - Mapping
     - Merge the horizontal and vertical laser scans to be used in octomapping.
         - The laser assembler ros package should have the capablility to do this. I remember reading about someone that did something similar.  If not, I might be able to use the PCL library to manually join the scans.
-    - Increase scan distance of laser scanners.
-        - This should improve the hector mapping and allow us to scan hallways/longer rooms.
     - Look into different methods to produce virtual odometry that can be passed into the hector mapping node.
         - The main 3 to look into are ICP, NDT and visual odometry.
 
@@ -26,4 +24,9 @@ To do:
         - Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
     - Take tests holding the robot and moving it in a wave-like motion to test the effectiveness of the IMU and how this effects 2D and 3D mapping.
 
+- Laser scans
+    - Increase scan distance of laser scanners.
+        - This should improve the hector mapping and allow us to scan hallways/longer rooms.
+    - Look into filtering laser scans
+        - The laser_filter ros package can be used for this. Should test to see if it improves the map. 
 Done:
