@@ -56,6 +56,7 @@ add_executable(data_recorder_node
   src/record.cpp
 )
 
+add_executable(imu_to_base_pub src/imu_to_base_pub.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -65,6 +66,8 @@ add_executable(data_recorder_node
 target_link_libraries(data_recorder_node
   ${catkin_LIBRARIES}
 )
+
+target_link_libraries(imu_to_base_pub ${catkin_LIBRARIES})
 
 #############
 ## Install ##
