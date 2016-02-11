@@ -58,7 +58,8 @@ public:
     ROS_INFO_STREAM("pitch = " << e.pitch);
     ROS_INFO_STREAM("yaw = "  << e.yaw);
     ROS_INFO_STREAM("");
-
+        
+         myahrs_pub.publish(imu_data_);
     }
 
 protected:
