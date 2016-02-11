@@ -10,10 +10,13 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   rosbag
   message_generation
+  cmake_modules
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
+find_package(Eigen REQUIRED)
 
 ## Generate messages in the 'msg' folder
 add_message_files(
@@ -31,7 +34,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES data_recorder
   CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
-  DEPENDS system_lib
+  DEPENDS system_lib Eigen
 )
 
 ###########
@@ -41,7 +44,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(include  ${catkin_INCLUDE_DIRS}
+include_directories(include  ${catkin_INCLUDE_DIRS} ${Eigen_INCLUDE_DIRS}
 )
 
 ## Declare a cpp library
@@ -67,7 +70,7 @@ target_link_libraries(data_recorder_node
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(imu_to_base_pub ${catkin_LIBRARIES})
+target_link_libraries(imu_to_base_pub ${catkin_LIBRARIES} ${Eigen_LIBRARIES})
 
 #############
 ## Install ##
