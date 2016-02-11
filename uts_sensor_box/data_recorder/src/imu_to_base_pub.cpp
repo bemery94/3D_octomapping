@@ -81,12 +81,12 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
     ROS_INFO_STREAM("rotInertialToImu = " << msgQuat);
 
     // Get the transform from the imu to the base_link
-    tf::Matrix3x3 rotImuToBl;
-    rotImuToBl = getRotationMat("/imu", "/base_link");
+    tf::Matrix3x3 rotBlToImu;
+    rotBlToImu = getRotationMat("/base_link", "/imu");
 
     // Calculate the rotation matrix giving the base_link relative to the Inertial frame
     tf::Matrix3x3 rotInertialToBl;
-    rotInertialToBl = rotInertialToImu * rotImuToBl;
+    rotInertialToBl = rotInertialToImu * rotBlToImu.transpose();
 
     /* Extract the roll and pitch values from the rotation matrix, giving the roll and pitch of the
        base link relative to the stabilized base frame. When converted back into a rotation matrix,
