@@ -97,8 +97,8 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
     double yaw;
 
     rotInertialToBl.getEulerYPR(yaw, pitch, roll);
-    ROS_INFO_STREAM("roll = " << roll);
-    ROS_INFO_STREAM("pitch = " << pitch);
+    ROS_INFO_STREAM("roll = " << roll * 180 / 3.1415);
+    ROS_INFO_STREAM("pitch = " << pitch * 180 / 3.1415);
 
     // Since there is no yaw between base stabilized and base link, we only set the roll and pitch
     tf::Quaternion quatBsToBl;
