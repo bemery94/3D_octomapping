@@ -70,7 +70,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
        */
 
     tf::Quaternion msgQuat;
-
+    ROS_INFO_STREAM("msgQuat = " << msgQuat);
     /* Convert the quaternion from the imu message into a TF quaternion so that we can perform
        linear algebra and conversions with the TF library
        */
@@ -78,6 +78,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 
     // Convert the quaternion to a rotation matrix
     tf::Matrix3x3 rotInertialToImu(msgQuat);
+    ROS_INFO_STREAM("rotInertialToImu = " << msgQuat);
 
     // Get the transform from the imu to the base_link
     tf::Matrix3x3 rotImuToBl;
@@ -96,6 +97,8 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
     double yaw;
 
     rotInertialToBl.getEulerYPR(yaw, pitch, roll);
+    ROS_INFO_STREAM("roll = " << roll);
+    ROS_INFO_STREAM("pitch = " << pitch);
 
     // Since there is no yaw between base stabilized and base link, we only set the roll and pitch
     tf::Quaternion quatBsToBl;
