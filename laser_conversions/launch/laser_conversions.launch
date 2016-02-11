@@ -8,7 +8,7 @@
         <remap from="cloud2_out" to="assembled_cloud2_out" />
     </node>
 
-<node type="conv_laser_to_cloud" name="conv_laser_to_cloud" pkg="laser_assembler_conversions">
+<node type="conv_laser_to_cloud" name="conv_laser_to_cloud" pkg="laser_conversions">
     <remap from="laser_scan_in" to="/scan_lsm"/>
 </node>
 </launch>
