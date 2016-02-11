@@ -60,11 +60,13 @@ int main(int argc, char **argv)
 
 void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 {
-    /*
+    /* This callback function gets the roll and pitch values from the IMU and the static transform
+       between the IMU and the base link and outputs a transform between the base_link and
+       base_stabilized frame. This transform is the roll and pitch values from the IMU transformed
+       into the base_link frame.
 
        Naming convention for variables: base_link = Bl
                                         base_stabilized = Bs
-
        */
 
     tf::Quaternion msgQuat;
