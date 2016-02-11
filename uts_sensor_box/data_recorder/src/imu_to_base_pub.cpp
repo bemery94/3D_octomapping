@@ -82,7 +82,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 
     // Get the transform from the imu to the base_link
     tf::Matrix3x3 rotImuToBl;
-    rotImuToBl = getRotationMat("/base_link", "/imu");
+    rotImuToBl = getRotationMat("/imu", "/base_link");
 
     // Calculate the rotation matrix giving the base_link relative to the Inertial frame
     tf::Matrix3x3 rotInertialToBl;
