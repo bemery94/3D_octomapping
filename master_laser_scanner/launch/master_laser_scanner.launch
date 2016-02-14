@@ -6,7 +6,7 @@
           args="--display-config $(find master_laser_scanner)/rviz/implement_hector_mapping.rviz"/>
 
 
-    <include file="$(find slam_2D)/launch/hector_mapping.launch" />
+    <include file="$(find slam_2d)/launch/hector_mapping.launch" />
 
     <include file="$(find laser_conversions)/launch/laser_assembler.launch" />
 
