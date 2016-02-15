@@ -5,6 +5,7 @@ To do:
 ==> Mapping
     - Merge the horizontal and vertical laser scans to be used in octomapping.
         * The laser assembler ros package should have the capablility to do this. I remember reading about someone that did something similar.  If not, I might be able to use the PCL library to manually join the scans.
+        * It seems that this may not be trivial. I may need to manually join the pointcloud messages before conversion to PointCloud2. If both messages have the same number of points then it should be fine, but it may be slightly more complex if they have a different number of points.
 
     - Look into different methods to produce virtual odometry that can be passed into the hector mapping node.
         * The main 3 to look into are ICP, NDT and visual odometry.
