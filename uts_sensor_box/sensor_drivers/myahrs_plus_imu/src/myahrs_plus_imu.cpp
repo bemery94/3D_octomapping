@@ -54,12 +54,7 @@ public:
 	imu_data_.header.frame_id = "imu";
 	imu_data_.header.stamp = ros::Time::now();
 
-    ROS_INFO_STREAM("roll = " <<e.roll);
-    ROS_INFO_STREAM("pitch = " << e.pitch);
-    ROS_INFO_STREAM("yaw = "  << e.yaw);
-    ROS_INFO_STREAM("");
-        
-         myahrs_pub.publish(imu_data_);
+    myahrs_pub.publish(imu_data_);
     }
 
 protected:
