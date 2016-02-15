@@ -23,6 +23,7 @@ To do:
 ==> Laser scans
     - Increase scan distance of laser scanners.
         * This should improve the hector mapping and allow us to scan hallways/longer rooms.
+        * The maximum scan distance of the laser scanners from the hokuyo nodes is set to 60 and the hector_mapping is set to 30. I will have to perform some tests to check if it is really being limited.
 
     - Look into filtering laser scans
         * The laser_filter ros package can be used for this. Should test to see if it improves the map. 
