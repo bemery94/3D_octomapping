@@ -20,8 +20,10 @@
  *      R(inertial, base_link) = R(inertial, IMU) * R(IMU, base_link)
  *                             = Rz(alpha) * Ry(beta) * Rx(gamma)
  *
- *  We know that R(intertial, base_stabilized) = Rz(alpha), as the stablized frame has
- *  roll = pitch = 0
+ *  We know that R(intertial, base_stabilized) = Rz(alpha) * R(IMU, base_link), as the stablized
+ *  frame has roll = pitch = 0 and the inertial frame is aligned with the IMU frame when
+ *  roll = pitch = 0 (meaning that the base_stabilized frame will have the same relative orientation
+ *  to the IMU as it has to the inertial frame).
  *
  *  Therefore, we can find the rotation matrix giving the base_link with respect to base_stabilized:
  *
@@ -70,7 +72,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
        */
 
     tf::Quaternion msgQuat;
-    ROS_INFO_STREAM("msgQuat = " << msgQuat);
+
     /* Convert the quaternion from the imu message into a TF quaternion so that we can perform
        linear algebra and conversions with the TF library
        */
@@ -78,7 +80,6 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 
     // Convert the quaternion to a rotation matrix
     tf::Matrix3x3 rotInertialToImu(msgQuat);
-    ROS_INFO_STREAM("rotInertialToImu = " << msgQuat);
 
     // Get the transform from the imu to the base_link
     tf::Matrix3x3 rotBlToImu;
@@ -97,12 +98,18 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
     double yaw;
 
     rotInertialToBl.getRPY(roll, pitch, yaw);
-    ROS_INFO_STREAM("roll__2 = " << roll * 180 / 3.1415);
-    ROS_INFO_STREAM("pitch__2 = " << pitch * 180 / 3.1415);
+
+    // Calculate the rotation matrix giving the base_stabilized relative to the Inertial frame.
+    tf::Matrix3x3 rotInertialToBs;
+    rotInertialToBs.setEulerZYX(yaw, 0, 0);
+    rotInertialToBs *= rotBlToImu.transpose();
+
+    tf::Matrix3x3 rotBsToBl;
+    rotBsToBl = rotInertialToBs.transpose() * rotInertialToBl;
 
     // Since there is no yaw between base stabilized and base link, we only set the roll and pitch
     tf::Quaternion quatBsToBl;
-    quatBsToBl.setRPY(roll, pitch, 0);
+    rotBsToBl.getRotation(quatBsToBl);
 
     // Convert the quaternion to a stamped transform
     tf::Transform transformBsToBl;
