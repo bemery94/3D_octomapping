@@ -1,22 +1,6 @@
 ﻿Work Log - Brendan Emery January-April 2016
 
 To do:
-==> Fix IMU:
-    - Talk to Dave to confirm that we are using the new IMU that we purchased.
-        * Dave said that we are using the latest IMU.
-
-    - Calibrate IMU to try and correct yaw values.
-        * Calibration was completed and the yaw values didn't seem too bad in the windows program. The yaw values drifted however they seemed to converge on an approximately correct value. This may indicate that there is an issue with the ros pkg currently being used on the robot.
-
-    - Upgrade the MyAhrs+ ros pkg.
-        * Dave mentioned that there was a more recent package available that we can test.
-
-    - Test new IMU.
-        * If the above steps don't fix the issue, I will try to use Laki's IMU. They were using a custom package so it may not be trivial to integrate it into our system, so this will be a last resort.
-
-    - Replace hector_imu_attitude_to_tf package with custom tf listener/broadcaster node.
-        * The package that I was using to publish the roll and pitch values required the imu to have the same orientation as the base_link. Since the IMU will have a different orientation, I will have to manually write a node to publish the tf between the base_link and base_stabilized frames using the imu values.
-
 
 ==> Mapping
     - Merge the horizontal and vertical laser scans to be used in octomapping.
@@ -43,6 +27,27 @@ To do:
     - Look into filtering laser scans
         * The laser_filter ros package can be used for this. Should test to see if it improves the map. 
 
+    - Update frequency of scans.
+        * Sometimes when taking scans, the scans aren't taken fast enough so ther are gaps in the octomap. This could either be due to the laser scanner or (more likely) one of the packages is throttling the speed.
 ==> Miscellaneous
     - Update documentation to include new package names and content 
+
 Done:
+
+==> Fix IMU - SOLUTION: Wrote my own node to transform the IMU roll and pitch values into the base_stabilized frame.
+    - Talk to Dave to confirm that we are using the new IMU that we purchased.
+        * Dave said that we are using the latest IMU.
+
+    - Calibrate IMU to try and correct yaw values.
+        * Calibration was completed and the yaw values didn't seem too bad in the windows program. The yaw values drifted however they seemed to converge on an approximately correct value. This may indicate that there is an issue with the ros pkg currently being used on the robot.
+
+    - Upgrade the MyAhrs+ ros pkg.
+        * Dave mentioned that there was a more recent package available that we can test.
+
+    - Test new IMU.
+        * If the above steps don't fix the issue, I will try to use Laki's IMU. They were using a custom package so it may not be trivial to integrate it into our system, so this will be a last resort.
+
+    - Replace hector_imu_attitude_to_tf package with custom tf listener/broadcaster node.
+        * The package that I was using to publish the roll and pitch values required the imu to have the same orientation as the base_link. Since the IMU will have a different orientation, I will have to manually write a node to publish the tf between the base_link and base_stabilized frames using the imu values.
+
+
