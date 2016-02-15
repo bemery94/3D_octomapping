@@ -30,7 +30,6 @@ To do:
     - Update frequency of scans.
         * Sometimes when taking scans, the scans aren't taken fast enough so ther are gaps in the octomap. This could either be due to the laser scanner or (more likely) one of the packages is throttling the speed.
 ==> Miscellaneous
-    - Update documentation to include new package names and content 
 
 Done:
 
@@ -50,4 +49,5 @@ Done:
     - Replace hector_imu_attitude_to_tf package with custom tf listener/broadcaster node.
         * The package that I was using to publish the roll and pitch values required the imu to have the same orientation as the base_link. Since the IMU will have a different orientation, I will have to manually write a node to publish the tf between the base_link and base_stabilized frames using the imu values.
 
-
+==> Miscellaneous
+    - Update documentation to include new package names and content 
