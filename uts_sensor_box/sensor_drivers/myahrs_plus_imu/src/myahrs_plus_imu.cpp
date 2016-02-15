@@ -83,6 +83,7 @@ int main(int argc, char **argv)
 	ros::init(argc,argv, "myahrs_node");
 	ros::NodeHandle nh;
 	myahrs_pub = nh.advertise<sensor_msgs::Imu>(imu_topic_, 1);
+	myahrs_euler_pub = nh.advertise<sensor_msgs::Imu>("imu_euler", 1);
 
 	nh.param<std::string>("imu_port", serial_device, "/dev/sb/imu");
 
