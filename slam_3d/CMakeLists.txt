@@ -6,7 +6,6 @@ project(slam_3d)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   cmake_modules
-  octomap_server
   sensor_msgs
   std_msgs
 )
