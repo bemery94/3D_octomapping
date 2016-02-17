@@ -10,6 +10,11 @@ To do:
     - Look into different methods to produce virtual odometry that can be passed into the hector mapping node.
         * The main 3 to look into are ICP, NDT and visual odometry.
 
+    - Implement NDT
+        * I haven't been able to produce a 2D map without odometry. However, when I publish the virtual odometry from hector mapping I am able to produce a map.
+        * I have been able to produce a map without odometry, however the package doesn't seem to be setup to handle the case when odometry is not supplied (even though the research paper claims that they didn't use odometry for their tests). When odometry is not supplied, the robot only takes the initial scan and then warns that there is no robot motion. I think that there may be a work around by altering the source code however it may not be worth the time.
+        * I did a test of the 2D map by supplying it the odometry from the hector mapping. It produced a decent 2D map however the estimated robot position was completely off. It asks for the static pose of the laser scanner with respect to the odometry frame which doesn't seem to make sense as this value constantly changes, perhaps it means the initial pose? Either way, the path that it took was completely wrong, and did not just look like it was moving in the wrong direction due to an incorrect offset.
+        * I will continue pursuing other options and talk with Jaime about whether or not to continue with this package.
 
 ==> Additional testing
     - Work with Maani to collect data for his bluetooth localisation.
