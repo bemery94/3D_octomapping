@@ -8,13 +8,17 @@ This repository contains packages that records imu, camera and laser scan data i
 
 This package provides functionality to run the laser scanner hardware and also to record the imu, camera and laser scan data.
 
-* ```hector_mapping_implementation```
+* ```slam_2D```
 
-This package produces a 2D map of the surrounding environment using the horizontal laser scanner.
+This package produces a 2D map of the surrounding environment using the horizontal laser scanner. It uses hector_mapping to produce a map and localise, giving the robot pose relative to the world frame.
 
-* ```laser_assembler_implementation```
+* ```slam_3D```
 
-This package produces a 3D map of the surrounding environment using the vertical laser scanner.
+This package produces a 3D map of the surrounding environment using the horizontal and vertical laser scanners. It uses octomapping to produce a map.
+
+* ```laser_conversions```
+
+This package performs transformations of message types between LaserScan, PointCloud, PointCloud2 etc. since the various packages for 2D and 3D mapping and localisation require specific input types.
 
 * ```master_laser_scanner```
 

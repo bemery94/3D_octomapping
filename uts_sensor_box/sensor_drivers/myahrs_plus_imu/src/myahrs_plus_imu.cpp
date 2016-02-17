@@ -54,7 +54,7 @@ public:
 	imu_data_.header.frame_id = "imu";
 	imu_data_.header.stamp = ros::Time::now();
 
-	myahrs_pub.publish(imu_data_);
+    myahrs_pub.publish(imu_data_);
     }
 
 protected:

@@ -1,0 +1,63 @@
+﻿Work Log - Brendan Emery January-April 2016
+
+To do:
+
+==> Mapping
+    - Merge the horizontal and vertical laser scans to be used in octomapping.
+        * The laser assembler ros package should have the capablility to do this. I remember reading about someone that did something similar.  If not, I might be able to use the PCL library to manually join the scans.
+        * It seems that this may not be trivial. I may need to manually join the pointcloud messages before conversion to PointCloud2. If both messages have the same number of points then it should be fine, but it may be slightly more complex if they have a different number of points.
+
+    - Look into different methods to produce virtual odometry that can be passed into the hector mapping node.
+        * The main 3 to look into are ICP, NDT and visual odometry.
+
+    - Implement NDT
+        * I haven't been able to produce a 2D map without odometry. However, when I publish the virtual odometry from hector mapping I am able to produce a map.
+        * I have been able to produce a map without odometry, however the package doesn't seem to be setup to handle the case when odometry is not supplied (even though the research paper claims that they didn't use odometry for their tests). When odometry is not supplied, the robot only takes the initial scan and then warns that there is no robot motion. I think that there may be a work around by altering the source code however it may not be worth the time.
+        * I did a test of the 2D map by supplying it the odometry from the hector mapping. It produced a decent 2D map however the estimated robot position was completely off. It asks for the static pose of the laser scanner with respect to the odometry frame which doesn't seem to make sense as this value constantly changes, perhaps it means the initial pose? Either way, the path that it took was completely wrong, and did not just look like it was moving in the wrong direction due to an incorrect offset.
+        * I will continue pursuing other options and talk with Jaime about whether or not to continue with this package.
+
+    - Implement ICP
+        * The ethzasl_icp_mapper package seems to be only supported up to ROS hydro. There is a branch in the source code called indigo_devel. This branch builds but it fails on runtime. I have checked online and someone else has had a similar issue with running this package in indigo.
+
+==> Additional testing
+    - Work with Maani to collect data for his bluetooth localisation.
+        * Maani said he would like to proceed with this once the IMU is working and in a cleaner room where we can get a better 2D map. He said that he wants to do it ASAP so we may have to take the scans without the IMU if it is still an issue.
+
+    - Take more tests of rooms and hallways.
+        * Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
+
+    - Take tests holding the robot and moving it in a wave-like motion to test the effectiveness of the IMU and how this effects 2D and 3D mapping.
+
+
+==> Laser scans
+    - Increase scan distance of laser scanners.
+        * This should improve the hector mapping and allow us to scan hallways/longer rooms.
+        * The maximum scan distance of the laser scanners from the hokuyo nodes is set to 60 and the hector_mapping is set to 30. I will have to perform some tests to check if it is really being limited.
+
+    - Look into filtering laser scans
+        * The laser_filter ros package can be used for this. Should test to see if it improves the map. 
+
+    - Update frequency of scans.
+        * Sometimes when taking scans, the scans aren't taken fast enough so ther are gaps in the octomap. This could either be due to the laser scanner or (more likely) one of the packages is throttling the speed.
+==> Miscellaneous
+
+Done:
+
+==> Fix IMU - SOLUTION: Wrote my own node to transform the IMU roll and pitch values into the base_stabilized frame.
+    - Talk to Dave to confirm that we are using the new IMU that we purchased.
+        * Dave said that we are using the latest IMU.
+
+    - Calibrate IMU to try and correct yaw values.
+        * Calibration was completed and the yaw values didn't seem too bad in the windows program. The yaw values drifted however they seemed to converge on an approximately correct value. This may indicate that there is an issue with the ros pkg currently being used on the robot.
+
+    - Upgrade the MyAhrs+ ros pkg.
+        * Dave mentioned that there was a more recent package available that we can test.
+
+    - Test new IMU.
+        * If the above steps don't fix the issue, I will try to use Laki's IMU. They were using a custom package so it may not be trivial to integrate it into our system, so this will be a last resort.
+
+    - Replace hector_imu_attitude_to_tf package with custom tf listener/broadcaster node.
+        * The package that I was using to publish the roll and pitch values required the imu to have the same orientation as the base_link. Since the IMU will have a different orientation, I will have to manually write a node to publish the tf between the base_link and base_stabilized frames using the imu values.
+
+==> Miscellaneous
+    - Update documentation to include new package names and content 

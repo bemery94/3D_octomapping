@@ -27,10 +27,10 @@ int main(int argc, char** argv)
 
     // Subscribers
     ros::Subscriber point_cloud_sub = n.subscribe<sensor_msgs::PointCloud>
-                                      ("point_cloud_publisher", 100, pointCloudCallBack);
+                                      ("cloud_in", 100, pointCloudCallBack);
 
     // Publishers
-    point_cloud_pub = n.advertise<sensor_msgs::PointCloud2>("point_cloud2_out", 100);
+    point_cloud_pub = n.advertise<sensor_msgs::PointCloud2>("cloud_to_cloud2_out", 100);
 
     ros::spin();
 }
