@@ -19,6 +19,11 @@ To do:
     - Implement ICP
         * The ethzasl_icp_mapper package seems to be only supported up to ROS hydro. There is a branch in the source code called indigo_devel. This branch builds but it fails on runtime. I have checked online and someone else has had a similar issue with running this package in indigo.
 
+    - Implement laser_scan_matcher to get odometry
+        * I have succesfully run the laser_scan_matcher package which can be used to provide virtual odometry. 
+        * I will now test to see if hector mapping is improved by passing in the virtual odometry.
+        * I will also test gmapping now that I have virtual odometry and see how it compares with hector mapping.
+
 ==> Additional testing
     - Work with Maani to collect data for his bluetooth localisation.
         * Maani said he would like to proceed with this once the IMU is working and in a cleaner room where we can get a better 2D map. He said that he wants to do it ASAP so we may have to take the scans without the IMU if it is still an issue.
