@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!--    Start RVIZ with configuration file-->
+    <node name="rviz" pkg="rviz" type="rviz" required="true"
+          args="--display-config $(find master_laser_scanner)/rviz/implement_hector_mapping.rviz"/>
+
+
+    <node pkg="gmapping" name="slam_gmapping" type="slam_gmapping" >
+        <remap from="/scan" to="scan_lsl" />
+    </node>
+
+    <include file="$(find laser_conversions)/launch/laser_conversions.launch" />
+
+    <include file="$(find slam_3d)/launch/gmapping_octomap.launch" />
+
+    <node name="image_view" pkg="image_view" type="image_view" >
+        <remap from="image" to="camera/image_raw" />
+    </node>
+</launch>
