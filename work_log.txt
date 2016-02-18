@@ -19,10 +19,12 @@ To do:
     - Implement ICP
         * The ethzasl_icp_mapper package seems to be only supported up to ROS hydro. There is a branch in the source code called indigo_devel. This branch builds but it fails on runtime. I have checked online and someone else has had a similar issue with running this package in indigo.
 
-==> Additional testing
-    - Work with Maani to collect data for his bluetooth localisation.
-        * Maani said he would like to proceed with this once the IMU is working and in a cleaner room where we can get a better 2D map. He said that he wants to do it ASAP so we may have to take the scans without the IMU if it is still an issue.
+    - Implement laser_scan_matcher to get odometry
+        * I have succesfully run the laser_scan_matcher package which can be used to provide virtual odometry. 
+        * I will now test to see if hector mapping is improved by passing in the virtual odometry.
+        * I will also test gmapping now that I have virtual odometry and see how it compares with hector mapping.
 
+==> Additional testing
     - Take more tests of rooms and hallways.
         * Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
 
@@ -33,13 +35,20 @@ To do:
     - Increase scan distance of laser scanners.
         * This should improve the hector mapping and allow us to scan hallways/longer rooms.
         * The maximum scan distance of the laser scanners from the hokuyo nodes is set to 60 and the hector_mapping is set to 30. I will have to perform some tests to check if it is really being limited.
+        * Maani did mention that he investigated issues with hector mapping a few years ago where the scans at maximum range were not being used. He said that there may be a parameter that allows us to change this.
 
     - Look into filtering laser scans
         * The laser_filter ros package can be used for this. Should test to see if it improves the map. 
 
     - Update frequency of scans.
         * Sometimes when taking scans, the scans aren't taken fast enough so ther are gaps in the octomap. This could either be due to the laser scanner or (more likely) one of the packages is throttling the speed.
+        * After checking the frequency of all the nodes, it seems that this isn't an issue with the publish rate of the data. It may be due to the actual occupancy mapping or something else?
+    
+    - Increase max scan angle in next redesign for horizontal scanner
+        * Currently the laser scanners are limited to ~180 degree field of view as there is perspex in the way past that point. The scanners have the ability to scan up to 270 degrees so this may be of use for the 2D mapping in the case of hallways, clear openings in rooms or hard to map places.
+
 ==> Miscellaneous
+    - Write up a document outlining the various mapping packages available in Indigo
 
 Done:
 
@@ -58,6 +67,10 @@ Done:
 
     - Replace hector_imu_attitude_to_tf package with custom tf listener/broadcaster node.
         * The package that I was using to publish the roll and pitch values required the imu to have the same orientation as the base_link. Since the IMU will have a different orientation, I will have to manually write a node to publish the tf between the base_link and base_stabilized frames using the imu values.
+
+==> Additional testing
+    - Work with Maani to collect data for his bluetooth localisation.
+        * Maani said he would like to proceed with this once the IMU is working and in a cleaner room where we can get a better 2D map. He said that he wants to do it ASAP so we may have to take the scans without the IMU if it is still an issue.
 
 ==> Miscellaneous
     - Update documentation to include new package names and content 

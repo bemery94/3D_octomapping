@@ -3,10 +3,9 @@
 
     <!--    Start RVIZ with configuration file-->
     <node name="rviz" pkg="rviz" type="rviz" required="true"
-          args="--display-config $(find master_laser_scanner)/rviz/slam.rviz"/>
+          args="--display-config $(find master_laser_scanner)/rviz/slam_gmapping.rviz"/>
 
-
-    <include file="$(find slam_2d)/launch/slam_2d.launch" />
+    <include file="$(find slam_2d)/launch/slam_2d_gmapping.launch" />
 
     <include file="$(find laser_conversions)/launch/laser_conversions.launch" />
 
