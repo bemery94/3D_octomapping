@@ -43,6 +43,10 @@ To do:
     - Update frequency of scans.
         * Sometimes when taking scans, the scans aren't taken fast enough so ther are gaps in the octomap. This could either be due to the laser scanner or (more likely) one of the packages is throttling the speed.
         * After checking the frequency of all the nodes, it seems that this isn't an issue with the publish rate of the data. It may be due to the actual occupancy mapping or something else?
+    
+    - Increase max scan angle in next redesign for horizontal scanner
+        * Currently the laser scanners are limited to ~180 degree field of view as there is perspex in the way past that point. The scanners have the ability to scan up to 270 degrees so this may be of use for the 2D mapping in the case of hallways, clear openings in rooms or hard to map places.
+
 ==> Miscellaneous
     - Write up a document outlining the various mapping packages available in Indigo
 
