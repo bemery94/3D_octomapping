@@ -3,7 +3,7 @@
 
     <!--    Start RVIZ with configuration file-->
     <node name="rviz" pkg="rviz" type="rviz" required="true"
-          args="--display-config $(find master_laser_scanner)/rviz/implement_hector_mapping.rviz"/>
+          args="--display-config $(find master_laser_scanner)/rviz/slam.rviz"/>
 
 
     <include file="$(find slam_2d)/launch/slam_2d.launch" />
