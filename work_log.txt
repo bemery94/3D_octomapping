@@ -47,7 +47,7 @@ To do:
     - Write up a document outlining the various mapping packages available in Indigo
     
     - Implement message_filters to synchronize the messages coming from the imu, laser scanners and map.
-
+        * Since we don't want to synchronise the tf data, I need to use multithreading to allow the synchronised msgs and the tf msgs to both be written to the same bag file.
 Done:
 
 ==> Fix IMU - SOLUTION: Wrote my own node to transform the IMU roll and pitch values into the base_stabilized frame.
