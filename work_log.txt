@@ -45,6 +45,8 @@ To do:
 
 ==> Miscellaneous
     - Write up a document outlining the various mapping packages available in Indigo
+    
+    - Implement message_filters to synchronize the messages coming from the imu, laser scanners and map.
 
 Done:
 
