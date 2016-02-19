@@ -30,7 +30,6 @@ To do:
 
     - Take tests holding the robot and moving it in a wave-like motion to test the effectiveness of the IMU and how this effects 2D and 3D mapping.
 
-
 ==> Laser scans
     - Increase scan distance of laser scanners.
         * This should improve the hector mapping and allow us to scan hallways/longer rooms.
@@ -43,9 +42,6 @@ To do:
     - Update frequency of scans.
         * Sometimes when taking scans, the scans aren't taken fast enough so ther are gaps in the octomap. This could either be due to the laser scanner or (more likely) one of the packages is throttling the speed.
         * After checking the frequency of all the nodes, it seems that this isn't an issue with the publish rate of the data. It may be due to the actual occupancy mapping or something else?
-    
-    - Increase max scan angle in next redesign for horizontal scanner
-        * Currently the laser scanners are limited to ~180 degree field of view as there is perspex in the way past that point. The scanners have the ability to scan up to 270 degrees so this may be of use for the 2D mapping in the case of hallways, clear openings in rooms or hard to map places.
 
 ==> Miscellaneous
     - Write up a document outlining the various mapping packages available in Indigo
@@ -68,9 +64,17 @@ Done:
     - Replace hector_imu_attitude_to_tf package with custom tf listener/broadcaster node.
         * The package that I was using to publish the roll and pitch values required the imu to have the same orientation as the base_link. Since the IMU will have a different orientation, I will have to manually write a node to publish the tf between the base_link and base_stabilized frames using the imu values.
 
+==> Laser scans
+    - Increase max scan angle in next redesign for horizontal scanner
+        * Currently the laser scanners are limited to ~180 degree field of view as there is perspex in the way past that point. The scanners have the ability to scan up to 270 degrees so this may be of use for the 2D mapping in the case of hallways, clear openings in rooms or hard to map places.
+
+
 ==> Additional testing
     - Work with Maani to collect data for his bluetooth localisation.
         * Maani said he would like to proceed with this once the IMU is working and in a cleaner room where we can get a better 2D map. He said that he wants to do it ASAP so we may have to take the scans without the IMU if it is still an issue.
 
+    - Took a test where I did 2 loops of the lab. It struggled to maintain localisation and didn't really improve the map. I think that this is not an option unless we implement loop closure.
+
 ==> Miscellaneous
     - Update documentation to include new package names and content 
+    - Updated the height of base_footprint with respect to base_link so that the 3D map is now built directly on top of the 2D map.
