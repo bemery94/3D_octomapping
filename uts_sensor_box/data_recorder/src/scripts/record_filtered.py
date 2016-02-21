@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import message_filters
+from threading import Lock, Thread
 from sensor_msgs.msg import LaserScan, Imu
 from tf.msg import tfMessage
 import rospy
@@ -8,8 +9,11 @@ import rosbag
 import time
 
 
-class RecordRosBag(object):
+class RecordRosBag(Thread):
+    lock = Lock()
+
     def __init__(self):
+        Thread.__init__(self)
         self.my_bag = None
         self.create_bag()
 
