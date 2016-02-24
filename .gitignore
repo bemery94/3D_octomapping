@@ -44,6 +44,7 @@ Thumbs.db
 *.swp
 *.pyc
 *~
+**/.idea
 # ROS #
 #######
 cmake_install.cmake
