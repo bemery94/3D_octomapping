@@ -56,6 +56,9 @@
 <!--	Broadcast TF between base_stabilized and base link -->
     <node pkg="data_recorder" name="imu_to_base_pub" type="imu_to_base_pub" output="screen"/>
 
+<!--    Broadcast TF between corrected imu and imu, and also inertial frame to map -->
+    <node pkg="data_recorder" name="initial_tf_pub" type="initial_tf_pub" output="screen"/>
+
 	<!-- Start the data recorder node -->
 	<node pkg="data_recorder" type="data_recorder_node" name="data_recorder" respawn="false" clear_params="true" output="screen"> </node>
 </launch>
