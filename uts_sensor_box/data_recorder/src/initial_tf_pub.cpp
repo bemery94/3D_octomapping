@@ -101,11 +101,11 @@ int main(int argc, char **argv)
 		}
 
 		// Publish the same transform at a consistent rate
-	    tf::StampedTransform transformOut1(transformCorrImuToImu, ros::Time(0),
+	    tf::StampedTransform transformOut1(transformCorrImuToImu, ros::Time::now(),
 	                                      "/corrected_imu",
 	                                      "/imu");
 
-		tf::StampedTransform transformOut2(transformInertialToMap, ros::Time(0),
+		tf::StampedTransform transformOut2(transformInertialToMap, ros::Time::now(),
 	                                      "/inertial",
 	                                      "/map_world_frame");
 
