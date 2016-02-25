@@ -3,9 +3,17 @@
 
 \documentclass{article}
 
+\usepackage[pdftex]{graphicx}
+\graphicspath {{figures/}}			 % Used to insert images from the figures folder (relative path)
+
 \usepackage{amsmath, amsthm, amssymb} % assumes amsmath package installed
 \usepackage{hyperref} 				 % Insert hyperlinks 
 \setlength{\parindent}{0pt}			 % Remove the automatic indent for new paragraphs
+
+\usepackage[T1]{fontenc}
+\usepackage{titling}
+
+\setlength{\droptitle}{-8em}   % This is your set screw
 
 \title{Laser Scanner Tranforms}
 \author{Brendan Emery}
@@ -19,6 +27,24 @@
 \begin{abstract}
 \noindent In this document I outline the relative transforms used on the laser scanning box and how they're calculated/implemented. The final goal is to find the roll and pitch of the of the robot relative to it's stabilised frame, i.e. $ {^{base\_stabilised}R\ _{base\_link}} $. This transform is broadcasted and used to transform the incoming laser scans used for localisation and mapping. Refer to \url{<http://wiki.ros.org/hectoR\ _slam/Tutorials/SettingUpForYourRobot>} for a description of the coordinate frame system that I have used. In addition to the standard frames described above, I have also added an imu\_corrected frame. This frame will give the imu values corrected by the initial offset of the imu due to any unknown rotations between the IMU and the robot that have not been accounted for in the urdf file. There is also an inertial frame which is determined by the IMU.
 \end{abstract}
+
+\vspace*{1cm}
+
+% Your image goes here
+\noindent
+\makebox[\textwidth]{
+\includegraphics[scale=0.31]{frame_diagram}
+}
+%
+
+\vspace*{0cm}
+
+%\begin{figure}[h!]
+% \centering
+  %\includegraphics[width=1.1\textwidth]{frame_diagram}
+%  \includegraphics[scale=0.3]{frame_diagram}
+% \caption{Coordinate frame system used}
+% \end{figure}
 
 \section{User Inputs}
 
