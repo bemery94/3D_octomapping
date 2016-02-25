@@ -3,7 +3,6 @@
 #include "tf/transform_broadcaster.h"
 #include "sensor_msgs/Imu.h"
 
-faskdjhfaksjfdaksdjfh
 /** @file initial_tf_pub.cpp
  *  @brief Calculates and publishes the initial imu offset and and also the transform between the
  *  map and inertial frame (both at time t=0).
