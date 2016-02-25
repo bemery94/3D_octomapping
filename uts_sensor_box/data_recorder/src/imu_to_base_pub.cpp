@@ -13,24 +13,11 @@
  *
  *  This node subscribes to the IMU and converts the provided quaternion to a rotation matrix,
  *  giving R(inertial, IMU). It also uses a transform listener to get the TF between the IMU and
- *  the base_link, giving R(base_link, IMU)
+ *  the base_link, giving R(base_link, IMU) and the TF between the inertial frame and the map
+ *  giving R(inertial, map).
  *
- *  We then find the roll, pitch and yaw values of the base_link in the inertial frame.
- *
- *      R(inertial, base_link) = R(inertial, IMU) * R(IMU, base_link)
- *                             = Rz(alpha) * Ry(beta) * Rx(gamma)
- *
- *  We know that R(intertial, base_stabilized) = Rz(alpha) * R(IMU, base_link), as the stablized
- *  frame has roll = pitch = 0 and the inertial frame is aligned with the IMU frame when
- *  roll = pitch = 0 (meaning that the base_stabilized frame will have the same relative orientation
- *  to the IMU as it has to the inertial frame).
- *
- *  Therefore, we can find the rotation matrix giving the base_link with respect to base_stabilized:
- *
- *  R(base_stabilized, base_link) = (R(Inertial, base_stabilized)) ^ T * R(inertial, base_link)
- *                                = Ry(beta) * Rx(gamma)
- *
- *  We then publish this value as a TF using a TF broadcaster.
+ *  For more information, see coordinate_frame_info.tex in the documentation folder in the root of
+ *  the package.
  *
  *  @author Brendan Emery
  *  @date Feb 2016
@@ -52,7 +39,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "imu_to_base_pub");
 	ros::NodeHandle n;
 
-	listener_ = new tf::TransformListener();//ros::Duration(100));
+	listener_ = new tf::TransformListener();
 
     ros::Subscriber imu_sub = n.subscribe<sensor_msgs::Imu>("myahrs_imu", 100, imu_cb);
 
@@ -62,10 +49,10 @@ int main(int argc, char **argv)
 
 void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 {
-    /* This callback function gets the roll and pitch values from the IMU and the static transform
-       between the IMU and the base link and outputs a transform between the base_link and
-       base_stabilized frame. This transform is the roll and pitch values from the IMU transformed
-       into the base_link frame.
+    /* This callback function gets the roll and pitch values from the IMU, the static transform
+       between the IMU and the base link and the static transform between the inertial frame and
+       the map frame. It then outputs a transform between the base_link and the base_stabilized
+       frame.
 
        Naming convention for variables: base_link = Bl
                                         base_stabilized = Bs
@@ -101,7 +88,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 
     // Calculate the rotation matrix giving the base_stabilized relative to the Inertial frame.
     tf::Matrix3x3 rotInertialToBs;
-    rotInertialToBs.setEulerZYX(yaw, 0, 0);
+    rotInertialToBs.setEulerYPR(yaw, 0, 0);
     rotInertialToBs *= rotBlToImu.transpose();
 
     tf::Matrix3x3 rotBsToBl;
