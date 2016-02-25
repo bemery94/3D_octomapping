@@ -83,4 +83,4 @@ html/
 *.mtc1
 *.out
 *.synctex.gz
-*.pdf
+documentation/*.pdf
