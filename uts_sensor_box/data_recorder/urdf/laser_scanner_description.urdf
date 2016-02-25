@@ -8,7 +8,7 @@
     base_link-->
   <link name="laser_lsl" />
   <link name="laser_lsm" />
-  <link name="imu" />
+  <link name="corrected_imu" />
   <link name="cam" />
 
 
