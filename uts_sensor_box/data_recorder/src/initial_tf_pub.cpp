@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 			 * inertial frame. This may need to be changed if a new IMU is used. Note. the values
 			 * are in radians.
 			 */
-			double roll = 3.1415;
+			double roll = 0;
 			double pitch = 0;
 			double yaw = 0;
 			////////////////////////////////////////////////////////////////////////////////////////
