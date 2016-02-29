@@ -51,10 +51,28 @@
 \subsection{Static transform: URDF file}
 The user must update the urdf file to give the transform $ {^{corrected\_imu}R\ _{base\_link}} $. This transform is the rotation between the base\_link of the robot and the coordinate frame of the IMU as it sits on the robot. This is done inside "data\_recorder/urdf/laser\_scanner\_description.urdf".
 
-\subsection{Static transform: static publisher}
-The user must use a static\_broadcaster\_publisher to provide $ {^{I}R\ _{map}}$.\\
+\section{Find Initial IMU Offset}
+At time t=0, the user should power up the unit on flat ground. To account for any angular offsets that haven't been accounted for in the transform between the imu and base\_link, we use the transform between the imu and the corrected imu frame. The corrected\_imu frame also corrects the initial heading, so that a yaw value of 0 will correspond to the robot travelling along the positive x direction of the map frame (whereas if we don't correct for this, a yaw value of 0 will correspond to moving east or another arbitrary direction set by the IMU):
+\begin{equation}
+^{corrected\_imu}R\ _{imu} =\ (^{I}R\ _{corrected\_imu})^T \times\  ^{I}R\ _{imu}
+\end{equation}
 
-The inertial frame will be provided by the IMU's datasheet.\\
+where,
+\begin{equation}
+^{I}R\ _{imu} =\ R\ _z(\alpha_0) \times\  R\ _y(\beta_0) \times\  R\ _x(\gamma_0) 
+\end{equation}
+
+where $\gamma_0$ =\ roll, $\beta_0$ =\ pitch and $\alpha_0$ =\ yaw of the imu in the inertial frame at t=0 and $^{I}R\ _{corrected\_imu} $ is the transform between the current IMU position on the robot and the inertial frame given in the IMU datasheet. Since the user cannot accurately estimate the initial yaw value of the vehicle, the user will provide the static roll, pitch and yaw values giving the offset of the imu in the inertial frame but we will also take the yaw value from the IMU to give the corrected robot an initial yaw value of 0:
+
+\begin{equation}
+^{I}R\ _{corrected\_imu} = R_z(\alpha_0) \times\ R\ _z(\alpha_{static}) \times\  R\ _y(\beta_{static}) \times\  R\ _x(\gamma_{static})
+\end{equation}
+
+We can now apply this transform to the IMU messages to get offset-corrected IMU messages. This is done inside "data\_recorder/src/initial\_tf\_pub.cpp"
+
+
+\subsection{Static transform: static publisher}
+The user must use a static\_broadcaster\_publisher to provide $ {^{I}R\ _{map}}$. This is done inside "data\_recorder/launch/data\_recorder.launch" \\
 
 The map frame is provided by the hector mapping package and will be initialised to be aligned and coincident with the base\_footprint frame (which is also aligned with the base\_link frame at t=0). Therefore the rotation between the inertial and map frame will be given by:
 
@@ -70,20 +88,7 @@ Therefore,
 
 The user needs to then manually determine these two transforms and then calculate and publish $^{I}R\ _{map}$. This is done inside "data\_recorder/src/initial\_tf\_pub.cpp"
 
-\section{Find Initial IMU Offset}
-At time t=0, the user should power up the unit on flat ground. To account for any angular offsets that haven't been accounted for in the transform between the imu and base\_link, we use the transform between the imu and the corrected imu frame:
-\begin{equation}
-^{corrected\_imu}R\ _{imu} =\ (^{I}R\ _{corrected\_imu})^T \times\  ^{I}R\ _{imu}
-\end{equation}
 
-where,
-\begin{equation}
-^{I}R\ _{imu} =\ R\ _z(\alpha_0) \times\  R\ _y(\beta_0) \times\  R\ _x(\gamma_0) 
-\end{equation}
-
-where $\gamma_0$ =\ roll, $\beta_0$ =\ pitch and $\alpha_0$ =\ yaw of the imu in the inertial frame at t=0 and $^{I}R\ _{corrected\_imu} $ is calculated above.\\
-
-We can now apply this transform to the IMU messages to get offset-corrected IMU messages. This is done inside "data\_recorder/src/initial\_tf\_pub.cpp"
 
 \section{Find Robot Orientation}
 We want to find the base\_link with respect to the base\_stabilised frame at any time to give the roll and pitch values of the robot.
