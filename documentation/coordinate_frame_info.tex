@@ -46,12 +46,12 @@
 % \caption{Coordinate frame system used}
 % \end{figure}
 
-\section{User Inputs}
+\section{Find initial transforms}
 
 \subsection{Static transform: URDF file}
 The user must update the urdf file to give the transform $ {^{corrected\_imu}R\ _{base\_link}} $. This transform is the rotation between the base\_link of the robot and the coordinate frame of the IMU as it sits on the robot. This is done inside "data\_recorder/urdf/laser\_scanner\_description.urdf".
 
-\section{Find Initial IMU Offset}
+\subsection{Find Initial IMU Offset}
 At time t=0, the user should power up the unit on flat ground. To account for any angular offsets that haven't been accounted for in the transform between the imu and base\_link, we use the transform between the imu and the corrected imu frame. The corrected\_imu frame also corrects the initial heading, so that a yaw value of 0 will correspond to the robot travelling along the positive x direction of the map frame (whereas if we don't correct for this, a yaw value of 0 will correspond to moving east or another arbitrary direction set by the IMU):
 \begin{equation}
 ^{corrected\_imu}R\ _{imu} =\ (^{I}R\ _{corrected\_imu})^T \times\  ^{I}R\ _{imu}
