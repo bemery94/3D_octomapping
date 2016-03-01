@@ -90,8 +90,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
     rotInertialToBl = rotInertialToImu * rotBlToImu.transpose();
 
     /* Extract the roll and pitch values from the rotation matrix, giving the roll and pitch of the
-       base link relative to the stabilized base frame. When converted back into a rotation matrix,
-       this will give R(base_stabilized, base_link)
+       base link relative to the interial frame.
        */
     double roll;
     double pitch;
@@ -99,10 +98,20 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 
     rotInertialToBl.getRPY(roll, pitch, yaw);
 
+
+    double roll2 = 0;
+    double pitch2 = 1.57;
+    double yaw2 = 3.1415;
+
+    tf::Matrix3x3 rotInertialToMap;
+    rotInertialToMap.setEulerYPR(yaw2, pitch2, roll2);
+
     // Calculate the rotation matrix giving the base_stabilized relative to the Inertial frame.
+    tf::Matrix3x3 rotMapToBs;
+    rotMapToBs.setEulerYPR(yaw, 0, 0);
+
     tf::Matrix3x3 rotInertialToBs;
-    rotInertialToBs.setEulerZYX(yaw, 0, 0);
-    rotInertialToBs *= rotBlToImu.transpose();
+    rotInertialToBs = rotInertialToMap * rotMapToBs;
 
     tf::Matrix3x3 rotBsToBl;
     rotBsToBl = rotInertialToBs.transpose() * rotInertialToBl;
