@@ -100,8 +100,8 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 
 
     double roll2 = 0;
-    double pitch2 = 1.57;
-    double yaw2 = 3.1415;
+    double pitch2 = 3.1415;
+    double yaw2 = 1.57;
 
     tf::Matrix3x3 rotInertialToMap;
     rotInertialToMap.setEulerYPR(yaw2, pitch2, roll2);
