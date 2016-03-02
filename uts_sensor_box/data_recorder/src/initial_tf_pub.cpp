@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 			rotInertialToCorrImu.setEulerYPR(yaw, pitch, roll);
 
 			tf::Matrix3x3 rotCorrImuToBl;
-			rotCorrImuToBl = getRotationMat("/corrected_imu", "/base_link");
+			rotCorrImuToBl = getRotationMat("/base_link", "/corrected_imu");
 
 			tf::Matrix3x3 rotInertialToMap;
 			rotInertialToMap = rotInertialToCorrImu * rotCorrImuToBl;
