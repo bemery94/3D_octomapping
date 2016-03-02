@@ -61,8 +61,8 @@ int main(int argc, char **argv)
 			 * are in radians.
 			 */
 			double roll = 0;
-			double pitch = 0;
-			double yaw = 0;
+			double pitch = 3.1415;
+			double yaw = 1.57;
 			////////////////////////////////////////////////////////////////////////////////////////
 
 			// Store the rpy values from above in a rotation matrix.
