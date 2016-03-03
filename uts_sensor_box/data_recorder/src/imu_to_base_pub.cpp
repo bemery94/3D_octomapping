@@ -188,6 +188,7 @@ tf::Matrix3x3 extractRollPitch(const tf::Matrix3x3 rotMatIn)
 	tf::Vector3 yVec(0, 1, 0);
 
 	tf::Vector3 xIn;
+	tf::Vector3 yIn;
 
 	// Find the vectors along the x and y axes of the input rotation matrix
 	xIn = rotMatIn * xVec;
