@@ -101,7 +101,13 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 
 	// We only want to represent the robots roll and pitch, so we remove the yaw value from the
 	// rotation of base stabilized ==> base link
-	rotBsToBlRollPitch = extractRollPitch(rotBsToBl);
+	double rollOut;
+	double pitchOut;
+	double yawOut;
+
+//	rotBsToBlRollPitch = extractRollPitch(rotBsToBl);
+	rotBsToBl.getRPY(rollOut, pitchOut, yawOut);
+	rotBsToBlRollPitch.setEulerYPR(0, pitchOut, rollOut);
 
     // Since there is no yaw between base stabilized and base link, we only set the roll and pitch
     tf::Quaternion quatBsToBl;
