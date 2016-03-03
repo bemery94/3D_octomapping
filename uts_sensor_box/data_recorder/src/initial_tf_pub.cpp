@@ -65,7 +65,6 @@ int main(int argc, char **argv)
 			double pitch;
 			double yaw;
 			rotInertialToImu.getRPY(roll, pitch, yaw);
-			ROS_INFO_STREAM("Initial yaw value" << yaw);
 
 			////// Calculate the transform between the inertial frame and map frame: //////
 
