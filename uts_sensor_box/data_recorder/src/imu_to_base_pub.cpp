@@ -138,7 +138,7 @@ tf::Matrix3x3 getRotationMat(const std::string target_frame, const std::string s
     catch (tf::TransformException &ex)
     // If the tf listener cannot find the transform, print an error and continue
     {
-      ROS_ERROR("%s",ex.what());
+      ROS_ERROR("In imu_to_base_pub %s",ex.what());
       ros::Duration(1.0).sleep();
     }
 
