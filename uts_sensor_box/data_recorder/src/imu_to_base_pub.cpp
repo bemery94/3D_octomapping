@@ -65,42 +65,42 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
        */
     tf::quaternionMsgToTF(msg->orientation, msgQuat);
 
-    // Convert the quaternion to a rotation matrix
-    tf::Matrix3x3 rotInertialToImu(msgQuat);
-
-    // Get the transform from the imu to the base_link
-    tf::Matrix3x3 rotBlToImu;
-    rotBlToImu = getRotationMat("/corrected_imu", "/base_link");
-
-    // Calculate the rotation matrix giving the base_link relative to the Inertial frame
-    tf::Matrix3x3 rotInertialToBl;
-    rotInertialToBl = rotInertialToImu * rotBlToImu.transpose();
-
+	// Declare all rotation matrices
+	tf::Matrix3x3 rotInertialToImu(msgQuat);
+	tf::Matrix3x3 rotBlToCorrImu;
+	tf::Matrix3x3 rotInertialToBl;
 	tf::Matrix3x3 rotInertialToMap;
+	tf::Matrix3x3 rotMapToBl;
+	tf::Matrix3x3 rotMapToBs;
+	tf::Matrix3x3 rotInertialToBs;
+	tf::Matrix3x3 rotBsToBlRollPitch;
+	tf::Matrix3x3 rotBsToBl;
+	tf::Matrix3x3 rotCorrImuToImu;
+	tf::Matrix3x3 rotInertialToCorrImu;
+
+	// Get rotation matrices from other tf publishers
+    rotBlToCorrImu = getRotationMat("/corrected_imu", "/base_link");
+	rotCorrImuToImu = getRotationMat("/imu", "/corrected_imu");
 	rotInertialToMap = getRotationMat("/map_world_frame", "/inertial");
 
-	tf::Matrix3x3 rotMapToBl;
+	rotInertialToCorrImu = rotInertialToImu * rotCorrImuToImu.transpose();
+	rotInertialToBl = rotInertialToCorrImu * rotBlToCorrImu.transpose();
 	rotMapToBl = rotInertialToBl.transpose() * rotInertialToMap;
 
     double roll;
     double pitch;
     double yaw;
-
     rotMapToBl.getRPY(roll, pitch, yaw);
 
-    // Calculate the rotation matrix giving the base_stabilized relative to the Inertial frame.
-    tf::Matrix3x3 rotMapToBs;
+	// The base link frame and base stabilized frames are defined as having the same yaw values
+	// relative to the map
 	rotMapToBs.setEulerYPR(yaw, 0, 0);
 
-	tf::Matrix3x3 rotInertialToBs;
 	rotInertialToBs = rotInertialToMap * rotMapToBs;
-
-    tf::Matrix3x3 rotBsToBl;
     rotBsToBl = rotInertialToBs.transpose() * rotInertialToBl;
 
 	// We only want to represent the robots roll and pitch, so we remove the yaw value from the
 	// rotation of base stabilized ==> base link
-	tf::Matrix3x3 rotBsToBlRollPitch;
 	rotBsToBlRollPitch = extractRollPitch(rotBsToBl);
 
     // Since there is no yaw between base stabilized and base link, we only set the roll and pitch
