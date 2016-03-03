@@ -44,6 +44,7 @@ Thumbs.db
 *.swp
 *.pyc
 *~
+**/.idea
 # ROS #
 #######
 cmake_install.cmake
@@ -57,3 +58,29 @@ srv_gen/
 ###########
 html/
 
+# Latex #
+#########
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+documentation/*.pdf

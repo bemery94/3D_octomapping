@@ -13,24 +13,11 @@
  *
  *  This node subscribes to the IMU and converts the provided quaternion to a rotation matrix,
  *  giving R(inertial, IMU). It also uses a transform listener to get the TF between the IMU and
- *  the base_link, giving R(base_link, IMU)
+ *  the base_link, giving R(base_link, IMU) and the TF between the inertial frame and the map
+ *  giving R(inertial, map).
  *
- *  We then find the roll, pitch and yaw values of the base_link in the inertial frame.
- *
- *      R(inertial, base_link) = R(inertial, IMU) * R(IMU, base_link)
- *                             = Rz(alpha) * Ry(beta) * Rx(gamma)
- *
- *  We know that R(intertial, base_stabilized) = Rz(alpha) * R(IMU, base_link), as the stablized
- *  frame has roll = pitch = 0 and the inertial frame is aligned with the IMU frame when
- *  roll = pitch = 0 (meaning that the base_stabilized frame will have the same relative orientation
- *  to the IMU as it has to the inertial frame).
- *
- *  Therefore, we can find the rotation matrix giving the base_link with respect to base_stabilized:
- *
- *  R(base_stabilized, base_link) = (R(Inertial, base_stabilized)) ^ T * R(inertial, base_link)
- *                                = Ry(beta) * Rx(gamma)
- *
- *  We then publish this value as a TF using a TF broadcaster.
+ *  For more information, see coordinate_frame_info.tex in the documentation folder in the root of
+ *  the package.
  *
  *  @author Brendan Emery
  *  @date Feb 2016
@@ -41,8 +28,8 @@
 
  // Functional protoypes
 tf::Matrix3x3 getRotationMat(std::string, std::string);
-Eigen::Matrix<double,3,3> convTransformToRot(tf::StampedTransform);
 void imu_cb(const sensor_msgs::Imu::ConstPtr&);
+tf::Matrix3x3 extractRollPitch(tf::Matrix3x3);
 
 // Global variables
 tf::TransformListener* listener_ = NULL;
@@ -52,7 +39,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "imu_to_base_pub");
 	ros::NodeHandle n;
 
-	listener_ = new tf::TransformListener();//ros::Duration(100));
+	listener_ = new tf::TransformListener();
 
     ros::Subscriber imu_sub = n.subscribe<sensor_msgs::Imu>("myahrs_imu", 100, imu_cb);
 
@@ -62,10 +49,10 @@ int main(int argc, char **argv)
 
 void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 {
-    /* This callback function gets the roll and pitch values from the IMU and the static transform
-       between the IMU and the base link and outputs a transform between the base_link and
-       base_stabilized frame. This transform is the roll and pitch values from the IMU transformed
-       into the base_link frame.
+    /* This callback function gets the roll and pitch values from the IMU, the static transform
+       between the IMU and the base link and the static transform between the inertial frame and
+       the map frame. It then outputs a transform between the base_link and the base_stabilized
+       frame.
 
        Naming convention for variables: base_link = Bl
                                         base_stabilized = Bs
@@ -78,47 +65,54 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
        */
     tf::quaternionMsgToTF(msg->orientation, msgQuat);
 
-    // Convert the quaternion to a rotation matrix
-    tf::Matrix3x3 rotInertialToImu(msgQuat);
+	// Declare all rotation matrices
+	tf::Matrix3x3 rotInertialToImu(msgQuat);
+	tf::Matrix3x3 rotBlToCorrImu;
+	tf::Matrix3x3 rotInertialToBl;
+	tf::Matrix3x3 rotInertialToMap;
+	tf::Matrix3x3 rotMapToBl;
+	tf::Matrix3x3 rotMapToBs;
+	tf::Matrix3x3 rotInertialToBs;
+	tf::Matrix3x3 rotBsToBlRollPitch;
+	tf::Matrix3x3 rotBsToBl;
+	tf::Matrix3x3 rotCorrImuToImu;
+	tf::Matrix3x3 rotInertialToCorrImu;
 
-    // Get the transform from the imu to the base_link
-    tf::Matrix3x3 rotBlToImu;
-    rotBlToImu = getRotationMat("/base_link", "/imu");
+	// Get rotation matrices from other tf publishers
+    rotBlToCorrImu = getRotationMat("/corrected_imu", "/base_link");
+	rotCorrImuToImu = getRotationMat("/imu", "/corrected_imu");
+	rotInertialToMap = getRotationMat("/map_world_frame", "/inertial");
 
-    // Calculate the rotation matrix giving the base_link relative to the Inertial frame
-    tf::Matrix3x3 rotInertialToBl;
-    rotInertialToBl = rotInertialToImu * rotBlToImu.transpose();
+	rotInertialToCorrImu = rotInertialToImu * rotCorrImuToImu;//.transpose();
+	rotInertialToBl = rotInertialToCorrImu * rotBlToCorrImu.transpose();
+	rotMapToBl = rotInertialToBl.transpose() * rotInertialToMap;
 
-    /* Extract the roll and pitch values from the rotation matrix, giving the roll and pitch of the
-       base link relative to the interial frame.
-       */
     double roll;
     double pitch;
     double yaw;
+    rotMapToBl.getRPY(roll, pitch, yaw);
 
-    rotInertialToBl.getRPY(roll, pitch, yaw);
 
+	// The base link frame and base stabilized frames are defined as having the same yaw values
+	// relative to the map
+	rotMapToBs.setEulerYPR(yaw, 0, 0);
 
-    double roll2 = 0;
-    double pitch2 = 3.1415;
-    double yaw2 = 1.57;
-
-    tf::Matrix3x3 rotInertialToMap;
-    rotInertialToMap.setEulerYPR(yaw2, pitch2, roll2);
-
-    // Calculate the rotation matrix giving the base_stabilized relative to the Inertial frame.
-    tf::Matrix3x3 rotMapToBs;
-    rotMapToBs.setEulerYPR(yaw, 0, 0);
-
-    tf::Matrix3x3 rotInertialToBs;
-    rotInertialToBs = rotInertialToMap * rotMapToBs;
-
-    tf::Matrix3x3 rotBsToBl;
+	rotInertialToBs = rotInertialToMap * rotMapToBs;
     rotBsToBl = rotInertialToBs.transpose() * rotInertialToBl;
+
+	// We only want to represent the robots roll and pitch, so we remove the yaw value from the
+	// rotation of base stabilized ==> base link
+	double rollOut;
+	double pitchOut;
+	double yawOut;
+
+//	rotBsToBlRollPitch = extractRollPitch(rotBsToBl);
+	rotBsToBl.getRPY(rollOut, pitchOut, yawOut);
+	rotBsToBlRollPitch.setEulerYPR(0, pitchOut, rollOut);
 
     // Since there is no yaw between base stabilized and base link, we only set the roll and pitch
     tf::Quaternion quatBsToBl;
-    rotBsToBl.getRotation(quatBsToBl);
+    rotBsToBlRollPitch.getRotation(quatBsToBl);
 
     // Convert the quaternion to a stamped transform
     tf::Transform transformBsToBl;
@@ -151,7 +145,7 @@ tf::Matrix3x3 getRotationMat(const std::string target_frame, const std::string s
     catch (tf::TransformException &ex)
     // If the tf listener cannot find the transform, print an error and continue
     {
-      ROS_ERROR("%s",ex.what());
+      ROS_ERROR("In imu_to_base_pub %s",ex.what());
       ros::Duration(1.0).sleep();
     }
 
@@ -166,32 +160,48 @@ tf::Matrix3x3 getRotationMat(const std::string target_frame, const std::string s
 }
 
 
-Eigen::Matrix<double,3,3> convTransformToRot(tf::StampedTransform transformIn)
-// Converts a StampedTransform into a rotation matrix
+tf::Matrix3x3 extractRollPitch(const tf::Matrix3x3 rotMatIn)
+/* Extracts the roll an pitch values from a rotation matrix and creates a new rotation matrix. It
+ * does this by projecting the x and y axes of the original rotation matrix along the xz and yz
+ * planes respectively and finding this new rotation.
+ * */
 {
-    Eigen::Matrix<double,3,3> rotMatOut;
+	tf::Vector3 xVec(1, 0, 0);
+	tf::Vector3 yVec(0, 1, 0);
 
-    rotMatOut(0,0) = 1 - 2 * pow(transformIn.getRotation().y(), 2) - 2
-                  * pow(transformIn.getRotation().z(), 2);
-    rotMatOut(0,1) = 2 * transformIn.getRotation().x() * transformIn.getRotation().y()
-                  - 2 * transformIn.getRotation().z() * transformIn.getRotation().w();
-    rotMatOut(0,2) = 2 * transformIn.getRotation().x() * transformIn.getRotation().z() + 2
-                  * transformIn.getRotation().y() * transformIn.getRotation().w();
-    rotMatOut(1,0) = 2 * transformIn.getRotation().x() * transformIn.getRotation().y() + 2
-                  * transformIn.getRotation().z() * transformIn.getRotation().w();
-    rotMatOut(1,1) = 1 - 2 * pow(transformIn.getRotation().x(), 2) - 2
-                  * pow(transformIn.getRotation().z(), 2);
-    rotMatOut(1,2) = 2 * transformIn.getRotation().y() * transformIn.getRotation().z()
-                  - 2 * transformIn.getRotation().x() * transformIn.getRotation().w();
-    rotMatOut(2,0) = 2 * transformIn.getRotation().x() * transformIn.getRotation().z()
-                  - 2 * transformIn.getRotation().y() * transformIn.getRotation().w();
-    rotMatOut(2,1) = 2 * transformIn.getRotation().y() * transformIn.getRotation().z()
-                  + 2 * transformIn.getRotation().x() * transformIn.getRotation().w();
-    rotMatOut(2,2) = 1 - 2 * pow(transformIn.getRotation().x(), 2) - 2
-                  * pow(transformIn.getRotation().y(), 2);
+	tf::Vector3 xIn;
+	tf::Vector3 yIn;
 
-    return rotMatOut;
+	// Find the vectors along the x and y axes of the input rotation matrix
+	xIn = rotMatIn * xVec;
+	yIn = rotMatIn * yVec;
+
+	tf::Vector3 xOut;
+	tf::Vector3 yOut;
+	tf::Vector3 zOut;
+
+	// Find the x and y vectors projected along the xz and yz frames of the frame that rotMatIn
+	// is relative to. We do this by subtracting the component of the xIn and yIn vectors that is
+	// normal to the plane that we are projecting them on.
+	xOut = xIn - xIn.dot(yVec) * yVec;
+	yOut = yIn - yIn.dot(xVec) * xVec;
+
+	zOut = xOut.cross(yOut);
+
+	double xx = xOut.getX();
+	double yx = xOut.getY();
+	double zx = xOut.getZ();
+
+	double xy = yOut.getX();
+	double yy = yOut.getY();
+	double zy = yOut.getZ();
+
+	double xz = zOut.getX();
+	double yz = zOut.getY();
+	double zz = zOut.getZ();
+
+	tf::Matrix3x3 rotMatOut(xx, xy, xz, yx, yy, yz, zx, zy, zz);
+
+	return rotMatOut;
 }
-
-
 

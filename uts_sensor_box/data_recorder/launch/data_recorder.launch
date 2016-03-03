@@ -51,10 +51,13 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
 <!--    Publish TF between base_stabilized and base footprint-->
-    <node pkg="tf" type="static_transform_publisher" name="base_stab_to_footprint_broadcaster" args="0 0 7 0 0 0 1 base_footprint base_stabilized 20" />
+    <node pkg="tf" type="static_transform_publisher" name="base_stab_to_footprint_broadcaster" args="0 0 0.63 0 0 0 1 base_footprint base_stabilized 20" />
 
 <!--	Broadcast TF between base_stabilized and base link -->
     <node pkg="data_recorder" name="imu_to_base_pub" type="imu_to_base_pub" output="screen"/>
+
+<!--    Broadcast TF between corrected imu and imu, and also inertial frame to map -->
+    <node pkg="data_recorder" name="initial_tf_pub" type="initial_tf_pub" output="screen"/>
 
 	<!-- Start the data recorder node -->
 	<node pkg="data_recorder" type="data_recorder_node" name="data_recorder" respawn="false" clear_params="true" output="screen"> </node>
