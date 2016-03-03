@@ -179,7 +179,7 @@ tf::Matrix3x3 extractRollPitch(const tf::Matrix3x3 rotMatIn)
 	xOut = xIn - xIn.dot(yVec) * yVec;
 	yOut = yIn - yIn.dot(xVec) * xVec;
 
-	zOut = xIn.cross(yIn);
+	zOut = xOut.cross(yOut);
 
 	double xx = xOut.getX();
 	double yx = xOut.getY();
