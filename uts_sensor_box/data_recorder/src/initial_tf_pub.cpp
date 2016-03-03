@@ -89,11 +89,11 @@ int main(int argc, char **argv)
 			tf::Matrix3x3 rotInertialToCorrImu;
 			rotInertialToCorrImu.setEulerYPR(yaw + yawOffset, pitchOffset, rollOffset);
 
-			tf::Matrix3x3 rotCorrImuToBl;
-			rotCorrImuToBl = getRotationMat("/base_link", "/corrected_imu");
+			tf::Matrix3x3 rotBlToCorrImu;
+			rotBlToCorrImu = getRotationMat("/corrected_imu", "/base_link");
 
 			tf::Matrix3x3 rotInertialToMap;
-			rotInertialToMap = rotInertialToCorrImu * rotCorrImuToBl;
+			rotInertialToMap = rotInertialToCorrImu * rotBlToCorrImu.transpose();
 
 			////// Calculate the transform between the corrected imu and the imu frame: //////
 			tf::Matrix3x3 rotCorrImuToImu;
