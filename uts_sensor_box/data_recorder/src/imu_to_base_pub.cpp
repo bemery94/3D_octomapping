@@ -30,6 +30,7 @@
 tf::Matrix3x3 getRotationMat(std::string, std::string);
 Eigen::Matrix<double,3,3> convTransformToRot(tf::StampedTransform);
 void imu_cb(const sensor_msgs::Imu::ConstPtr&);
+tf::Matrix3x3 extractRollPitch(tf::Matrix3x3);
 
 // Global variables
 tf::TransformListener* listener_ = NULL;
@@ -94,9 +95,14 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
     tf::Matrix3x3 rotBsToBl;
     rotBsToBl = rotInertialToBs.transpose() * rotInertialToBl;
 
+	// We only want to represent the robots roll and pitch, so we remove the yaw value from the
+	// rotation of base stabilized ==> base link
+	tf::Matrix3x3 rotBsToBlRollPitch;
+	rotBsToBlRollPitch = extractRollPitch(rotBsToBl);
+
     // Since there is no yaw between base stabilized and base link, we only set the roll and pitch
     tf::Quaternion quatBsToBl;
-    rotBsToBl.getRotation(quatBsToBl);
+    rotBsToBlRollPitch.getRotation(quatBsToBl);
 
     // Convert the quaternion to a stamped transform
     tf::Transform transformBsToBl;
@@ -172,4 +178,48 @@ Eigen::Matrix<double,3,3> convTransformToRot(tf::StampedTransform transformIn)
 }
 
 
+tf::Matrix3x3 extractRollPitch(const tf::Matrix3x3 rotMatIn)
+/* Extracts the roll an pitch values from a rotation matrix and creates a new rotation matrix. It
+ * does this by projecting the x and y axes of the original rotation matrix along the xz and yz
+ * planes respectively and finding this new rotation.
+ * */
+{
+	tf::Vector3 xVec(1, 0, 0);
+	tf::Vector3 yVec(0, 1, 0);
+
+	tf::Vector3 xIn;
+
+	// Find the vectors along the x and y axes of the input rotation matrix
+	xIn = rotMatIn * xVec;
+	yIn = rotMatIn * yVec;
+
+	tf::Vector3 xOut;
+	tf::Vector3 yOut;
+	tf::Vector3 zOut;
+
+	// Find the x and y vectors projected along the xz and yz frames of the frame that rotMatIn
+	// is relative to. We do this by subtracting the component of the xIn and yIn vectors that is
+	// normal to the plane that we are projecting them on.
+	xOut = xIn - xIn.dot(yVec) * yVec;
+	yOut = yIn - yIn.dot(xVec) * xVec;
+
+	zOut = xIn.cross(yIn);
+
+	double xx = xOut.getX();
+	double yx = xOut.getY();
+	double zx = xOut.getZ();
+
+	double xy = yOut.getX();
+	double yy = yOut.getY();
+	double zy = yOut.getZ();
+
+	double xz = zOut.getX();
+	double yz = zOut.getY();
+	double zz = zOut.getZ();
+
+	tf::Matrix3x3 rotMatOut(xx, xy, xz, yx, yy, yz, zx, zy, zz);
+
+	return rotMatOut;
+
+}
 
