@@ -71,13 +71,13 @@ int main(int argc, char **argv)
 
 			////////////////////////////////////// User Set ////////////////////////////////////////
 			/*
-			 * User should set here the roll, pitch and yaw values that transform the IMU into the
-			 * inertial frame. This may need to be changed if a new IMU is used. Note. the values
-			 * are in radians.
+			 * User should set here the roll, pitch and yaw values that transform the IMU (as
+			 * it's positioned on the robot in the initial/flat state) into the inertial frame.
+			 * This may need to be changed if a new IMU is used. Note. the values are in radians.
 			 */
 			double rollOffset = 0;
-			double pitchOffset = 3.1415;
-			double yawOffset = 1.57;
+			double pitchOffset = 0;
+			double yawOffset = 0;
 			////////////////////////////////////////////////////////////////////////////////////////
 
 			/* Store the rpy values from above in a rotation matrix. We are using:
