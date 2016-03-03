@@ -28,7 +28,6 @@
 
  // Functional protoypes
 tf::Matrix3x3 getRotationMat(std::string, std::string);
-Eigen::Matrix<double,3,3> convTransformToRot(tf::StampedTransform);
 void imu_cb(const sensor_msgs::Imu::ConstPtr&);
 tf::Matrix3x3 extractRollPitch(tf::Matrix3x3);
 
@@ -150,34 +149,6 @@ tf::Matrix3x3 getRotationMat(const std::string target_frame, const std::string s
 }
 
 
-Eigen::Matrix<double,3,3> convTransformToRot(tf::StampedTransform transformIn)
-// Converts a StampedTransform into a rotation matrix
-{
-    Eigen::Matrix<double,3,3> rotMatOut;
-
-    rotMatOut(0,0) = 1 - 2 * pow(transformIn.getRotation().y(), 2) - 2
-                  * pow(transformIn.getRotation().z(), 2);
-    rotMatOut(0,1) = 2 * transformIn.getRotation().x() * transformIn.getRotation().y()
-                  - 2 * transformIn.getRotation().z() * transformIn.getRotation().w();
-    rotMatOut(0,2) = 2 * transformIn.getRotation().x() * transformIn.getRotation().z() + 2
-                  * transformIn.getRotation().y() * transformIn.getRotation().w();
-    rotMatOut(1,0) = 2 * transformIn.getRotation().x() * transformIn.getRotation().y() + 2
-                  * transformIn.getRotation().z() * transformIn.getRotation().w();
-    rotMatOut(1,1) = 1 - 2 * pow(transformIn.getRotation().x(), 2) - 2
-                  * pow(transformIn.getRotation().z(), 2);
-    rotMatOut(1,2) = 2 * transformIn.getRotation().y() * transformIn.getRotation().z()
-                  - 2 * transformIn.getRotation().x() * transformIn.getRotation().w();
-    rotMatOut(2,0) = 2 * transformIn.getRotation().x() * transformIn.getRotation().z()
-                  - 2 * transformIn.getRotation().y() * transformIn.getRotation().w();
-    rotMatOut(2,1) = 2 * transformIn.getRotation().y() * transformIn.getRotation().z()
-                  + 2 * transformIn.getRotation().x() * transformIn.getRotation().w();
-    rotMatOut(2,2) = 1 - 2 * pow(transformIn.getRotation().x(), 2) - 2
-                  * pow(transformIn.getRotation().y(), 2);
-
-    return rotMatOut;
-}
-
-
 tf::Matrix3x3 extractRollPitch(const tf::Matrix3x3 rotMatIn)
 /* Extracts the roll an pitch values from a rotation matrix and creates a new rotation matrix. It
  * does this by projecting the x and y axes of the original rotation matrix along the xz and yz
@@ -221,6 +192,5 @@ tf::Matrix3x3 extractRollPitch(const tf::Matrix3x3 rotMatIn)
 	tf::Matrix3x3 rotMatOut(xx, xy, xz, yx, yy, yz, zx, zy, zz);
 
 	return rotMatOut;
-
 }
 
