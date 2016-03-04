@@ -72,7 +72,10 @@ int main(int argc, char **argv)
 			/*
 			 * User should set here the roll, pitch and yaw values that transform the IMU (as
 			 * it's positioned on the robot in the initial/flat state) into the inertial frame.
-			 * This may need to be changed if a new IMU is used. Note. the values are in radians.
+			 * This may need to be changed if a new IMU is used. If the IMU is oriented in a
+			 * way that the initial roll and pitch values are 0, then the IMU is aligned with
+			 * the inertial frame which means that the following offset angles will be 0.
+			 * Note. the values are in radians.
 			 */
 			double rollOffset = 0;
 			double pitchOffset = 0;
