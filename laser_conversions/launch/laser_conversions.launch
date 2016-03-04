@@ -2,13 +2,27 @@
 
 <launch>
     <!--Converts PointCloud message to PointCloud2. The PointCloud2 msg is used for the octomap-->
-    <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2"
+    <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_lsm"
         pkg="laser_conversions">
-        <remap from="cloud_in" to="laser_to_cloud_out" />
-        <remap from="cloud2_out" to="assembled_cloud2_out" />
+        <remap from="cloud_in" to="/lsm_cloud_out" />
+        <remap from="cloud2_out" to="/assembled_cloud2_out" />
     </node>
 
-<node type="conv_laser_to_cloud" name="conv_laser_to_cloud" pkg="laser_conversions">
+<node type="conv_laser_to_cloud" name="conv_laser_to_cloud_lsm" pkg="laser_conversions">
     <remap from="laser_scan_in" to="/scan_lsm"/>
+    <remap from="laser_to_cloud_out" to="/lsm_cloud_out"/>
 </node>
+
+<!--Converts PointCloud message to PointCloud2. The PointCloud2 msg is used for the octomap-->
+    <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_lsl"
+        pkg="laser_conversions">
+        <remap from="cloud_in" to="/lsl_cloud_out" />
+        <remap from="cloud2_out" to="/assembled_cloud2_out" />
+    </node>
+
+<node type="conv_laser_to_cloud" name="conv_laser_to_cloud_lsl" pkg="laser_conversions">
+    <remap from="laser_scan_in" to="/scan_lsl"/>
+    <remap from="laser_to_cloud_out" to="/lsl_cloud_out"/>
+</node>
+
 </launch>
