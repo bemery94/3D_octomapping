@@ -23,7 +23,7 @@
 	</node>
 
 	<!-- IMU board -->
-	<!--node pkg="myahrs_plus_imu" type="myahrs_plus_imu_node" name="myahrs_imu" clear_params="true" output="screen" respawn="true"> </node-->
+	<node pkg="myahrs_plus_imu" type="myahrs_plus_imu_node" name="myahrs_imu" clear_params="true" output="screen" respawn="true"> </node>
 
 	<!-- Hokuyo Laser Scanner primary (used for localisation) -->
 	<node pkg="hokuyo_node" type="hokuyo_node" name="laser_lsl">
