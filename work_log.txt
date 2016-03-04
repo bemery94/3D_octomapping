@@ -3,12 +3,10 @@
 To do:
 
 ==> IMU
-    - Implement transform to store the initial rotational offset of the IMU. 
-        * All imu values that are used should be rotated by this offset first. This offset is used to set a datum for the robot by assuming that the robot is initialised on a flat surface, so the initial rotation is an uninentional offset between the imu and the robot.
-
     - Use the roll, pitch and yaw values from the IMU as odoemtry and pass into hector mapping.
         * In order to test how effective it is to use the yaw value from the IMU in mapping/localisation, I will use the IMU data to produce virtual (rotational) odometry. 
         * If this doesn't work, I can stick with the setup I have (using the roll and pitch values through TF's) and compare hector mappings calculated rotational rates with the IMU's rotational rates.
+        * robot_pose_ekf can not produce rotational odometry using just the imu. 
  
 ==> Mapping
     - Merge the horizontal and vertical laser scans to be used in octomapping.
@@ -68,6 +66,11 @@ Done:
 
     - Replace hector_imu_attitude_to_tf package with custom tf listener/broadcaster node.
         * The package that I was using to publish the roll and pitch values required the imu to have the same orientation as the base_link. Since the IMU will have a different orientation, I will have to manually write a node to publish the tf between the base_link and base_stabilized frames using the imu values.
+
+==> IMU
+    - Implement transform to store the initial rotational offset of the IMU. 
+        * All imu values that are used should be rotated by this offset first. This offset is used to set a datum for the robot by assuming that the robot is initialised on a flat surface, so the initial rotation is an uninentional offset between the imu and the robot.
+
 
 ==> Laser scans
     - Increase max scan angle in next redesign for horizontal scanner
