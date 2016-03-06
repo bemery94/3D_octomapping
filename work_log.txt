@@ -3,9 +3,6 @@
 To do:
 
 ==> IMU
-    - Implement transform to store the initial rotational offset of the IMU. 
-        * All imu values that are used should be rotated by this offset first. This offset is used to set a datum for the robot by assuming that the robot is initialised on a flat surface, so the initial rotation is an uninentional offset between the imu and the robot.
-
     - Use the roll, pitch and yaw values from the IMU as odoemtry and pass into hector mapping.
         * In order to test how effective it is to use the yaw value from the IMU in mapping/localisation, I will use the IMU data to produce virtual (rotational) odometry. 
         * If this doesn't work, I can stick with the setup I have (using the roll and pitch values through TF's) and compare hector mappings calculated rotational rates with the IMU's rotational rates.
@@ -56,6 +53,9 @@ Done:
 ==> Fix IMU - SOLUTION: Wrote my own node to transform the IMU roll and pitch values into the base_stabilized frame.
     - Talk to Dave to confirm that we are using the new IMU that we purchased.
         * Dave said that we are using the latest IMU.
+    - Implement transform to store the initial rotational offset of the IMU. 
+        * All imu values that are used should be rotated by this offset first. This offset is used to set a datum for the robot by assuming that the robot is initialised on a flat surface, so the initial rotation is an uninentional offset between the imu and the robot.
+
 
     - Calibrate IMU to try and correct yaw values.
         * Calibration was completed and the yaw values didn't seem too bad in the windows program. The yaw values drifted however they seemed to converge on an approximately correct value. This may indicate that there is an issue with the ros pkg currently being used on the robot.
