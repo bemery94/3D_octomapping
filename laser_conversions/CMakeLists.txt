@@ -136,6 +136,7 @@ add_definitions(${PCL_LIBRARY_DIRS})
 ## Declare a C++ executable
 add_executable(conv_laser_to_cloud src/conv_laser_to_cloud.cpp)
 add_executable(conv_cloud_to_cloud2 src/conv_cloud_to_cloud2.cpp)
+add_executable(concatenate_pcls src/concatenate_pcls.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -147,6 +148,10 @@ target_link_libraries(conv_laser_to_cloud
 )
 
 target_link_libraries(conv_cloud_to_cloud2
+    ${catkin_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES}
+)
+
+target_link_libraries(concatenate_pcls
     ${catkin_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES}
 )
 #############
