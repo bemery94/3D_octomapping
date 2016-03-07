@@ -25,4 +25,6 @@
     <remap from="laser_to_cloud_out" to="/lsl_cloud_out"/>
 </node>
 
+<!-- Combines the point clouds from  the horizontal and vertical laser scanners -->
+<node type="concatenate_pcls" name="concatenate_pcls" pkg="laser_conversions" />
 </launch>
