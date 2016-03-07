@@ -43,6 +43,8 @@ int main(int argc, char** argv)
 	tf::StampedTransform transformLsm;
 	sensor_msgs::PointCloud2 sensorCloud2Out;
 
+	sensorCloud2Out.header.frame_id = "/base_link";
+
 	ros::Rate sleep_rate(10);
 	while(ros::ok())
 	{
