@@ -33,6 +33,9 @@ To do:
         * I will now test to see if hector mapping is improved by passing in the virtual odometry.
         * I will also test gmapping now that I have virtual odometry and see how it compares with hector mapping.
 
+    - Implement tf message filters
+        * The transforms found within this program should all be using the tfs at the correct times. Therefore we need to synchronise the tfs and whatever data (e.g. laser scans/point clouds) we are trying to transform. This should be implemented using tf message filters and regular message filters.
+
 ==> Additional testing
     - Take more tests of rooms and hallways.
         * Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
