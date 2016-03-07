@@ -5,7 +5,7 @@
     <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_lsm"
         pkg="laser_conversions">
         <remap from="cloud_in" to="/lsm_cloud_out" />
-        <remap from="cloud2_out" to="/assembled_cloud2_out" />
+        <remap from="cloud_to_cloud2_out" to="/cloud_to_cloud2_out_lsm" />
     </node>
 
 <node type="conv_laser_to_cloud" name="conv_laser_to_cloud_lsm" pkg="laser_conversions">
@@ -17,7 +17,7 @@
     <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_lsl"
         pkg="laser_conversions">
         <remap from="cloud_in" to="/lsl_cloud_out" />
-        <remap from="cloud2_out" to="/assembled_cloud2_out" />
+        <remap from="cloud_to_cloud2_out" to="/cloud_to_cloud2_out_lsl" />
     </node>
 
 <node type="conv_laser_to_cloud" name="conv_laser_to_cloud_lsl" pkg="laser_conversions">
