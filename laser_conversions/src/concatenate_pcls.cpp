@@ -6,6 +6,9 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/common/projection_matrix.h>
 #include <pcl/conversions.h>
+#include "tf/transform_listener.h"
+#include "pcl/common/transforms.h"
+#include "pcl_ros/transforms.h"
 
 pcl::PCLPointCloud2 cloud2Lsl;
 pcl::PCLPointCloud2 cloud2Lsm;
@@ -15,11 +18,15 @@ pcl::PointCloud<pcl::PointXYZ> cloudLsm;
 
 void lsl_cb(const sensor_msgs::PointCloud2::ConstPtr&);
 void lsm_cb(const sensor_msgs::PointCloud2::ConstPtr&);
+tf::StampedTransform getTransform(std::string, std::string, ros::Time);
+tf::TransformListener* listener_ = NULL;
 
 int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "concatenate_pcls");
 	ros::NodeHandle n;
+
+	listener_ = new tf::TransformListener();
 
 	ros::Subscriber lsl_sub = n.subscribe<sensor_msgs::PointCloud2>("/cloud_to_cloud2_out_lsl", 10,
 	                                                                lsl_cb);
@@ -29,13 +36,23 @@ int main(int argc, char** argv)
 			("/assembled_cloud2_out", 10);
 
 	pcl::PointCloud<pcl::PointXYZ> cloudOut;
+	pcl::PointCloud<pcl::PointXYZ> transformedCloudLsl;
+	pcl::PointCloud<pcl::PointXYZ> transformedCloudLsm;
 	pcl::PCLPointCloud2 cloud2Out;
+	tf::StampedTransform transformLsl;
+	tf::StampedTransform transformLsm;
 	sensor_msgs::PointCloud2 sensorCloud2Out;
 
 	ros::Rate sleep_rate(10);
 	while(ros::ok())
 	{
-		cloudOut = cloudLsl + cloudLsm;
+		transformLsm = getTransform("/base_link", "/laser_lsm", ros::Time(0));
+		transformLsl = getTransform("/base_link", "/laser_lsl", ros::Time(0));
+
+		pcl_ros::transformPointCloud(cloudLsl, transformedCloudLsl, transformLsl);
+		pcl_ros::transformPointCloud(cloudLsm, transformedCloudLsm, transformLsm);
+
+		cloudOut = transformedCloudLsl + transformedCloudLsm;
 
 		pcl::toPCLPointCloud2(cloudOut, cloud2Out);
 		pcl_conversions::fromPCL(cloud2Out, sensorCloud2Out);
@@ -45,8 +62,6 @@ int main(int argc, char** argv)
 		sleep_rate.sleep();
 		ros::spinOnce();
 	}
-
-
 }
 
 void lsl_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
@@ -67,3 +82,24 @@ void lsm_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
 	pcl::fromPCLPointCloud2(cloud2Lsm, cloudLsm);
 }
 
+tf::StampedTransform getTransform(const std::string target_frame, const std::string source_frame,
+                                  const ros::Time timeStamp)
+// Retrieve the transform between the target_frame and source_frame arguments
+{
+	tf::StampedTransform transformOut;
+
+    try
+    {
+	    listener_->waitForTransform(target_frame, source_frame, timeStamp,
+	                               ros::Duration(3.0));
+        listener_->lookupTransform(target_frame, source_frame,
+                               timeStamp, transformOut);
+    }
+    catch (tf::TransformException &ex)
+    // If the tf listener cannot find the transform, print an error and continue
+    {
+      ROS_ERROR("In imu_to_base_pub %s",ex.what());
+    }
+
+	return transformOut;
+}
