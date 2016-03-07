@@ -3,9 +3,6 @@
 To do:
 
 ==> IMU
-    - Implement transform to store the initial rotational offset of the IMU. 
-        * All imu values that are used should be rotated by this offset first. This offset is used to set a datum for the robot by assuming that the robot is initialised on a flat surface, so the initial rotation is an uninentional offset between the imu and the robot.
-
     - Use the roll, pitch and yaw values from the IMU as odoemtry and pass into hector mapping.
         * In order to test how effective it is to use the yaw value from the IMU in mapping/localisation, I will use the IMU data to produce virtual (rotational) odometry. 
         * If this doesn't work, I can stick with the setup I have (using the roll and pitch values through TF's) and compare hector mappings calculated rotational rates with the IMU's rotational rates.
@@ -33,6 +30,9 @@ To do:
         * I will now test to see if hector mapping is improved by passing in the virtual odometry.
         * I will also test gmapping now that I have virtual odometry and see how it compares with hector mapping.
 
+    - Implement tf message filters
+        * The transforms found within this program should all be using the tfs at the correct times. Therefore we need to synchronise the tfs and whatever data (e.g. laser scans/point clouds) we are trying to transform. This should be implemented using tf message filters and regular message filters.
+
 ==> Additional testing
     - Take more tests of rooms and hallways.
         * Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
@@ -56,6 +56,9 @@ Done:
 ==> Fix IMU - SOLUTION: Wrote my own node to transform the IMU roll and pitch values into the base_stabilized frame.
     - Talk to Dave to confirm that we are using the new IMU that we purchased.
         * Dave said that we are using the latest IMU.
+    - Implement transform to store the initial rotational offset of the IMU. 
+        * All imu values that are used should be rotated by this offset first. This offset is used to set a datum for the robot by assuming that the robot is initialised on a flat surface, so the initial rotation is an uninentional offset between the imu and the robot.
+
 
     - Calibrate IMU to try and correct yaw values.
         * Calibration was completed and the yaw values didn't seem too bad in the windows program. The yaw values drifted however they seemed to converge on an approximately correct value. This may indicate that there is an issue with the ros pkg currently being used on the robot.
