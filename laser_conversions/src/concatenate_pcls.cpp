@@ -9,6 +9,7 @@
 #include "tf/transform_listener.h"
 #include "pcl/common/transforms.h"
 #include "pcl_ros/transforms.h"
+#include "../../../../../../../../opt/ros/indigo/include/ros/time.h"
 
 pcl::PCLPointCloud2 cloud2Lsl;
 pcl::PCLPointCloud2 cloud2Lsm;
@@ -43,14 +44,14 @@ int main(int argc, char** argv)
 	tf::StampedTransform transformLsm;
 	sensor_msgs::PointCloud2 sensorCloud2Out;
 
+	transformLsm = getTransform("/base_link", "/laser_lsm", ros::Time(0));
+	transformLsl = getTransform("/base_link", "/laser_lsl", ros::Time(0));
+
 	sensorCloud2Out.header.frame_id = "/base_link";
 
 	ros::Rate sleep_rate(10);
 	while(ros::ok())
 	{
-		transformLsm = getTransform("/base_link", "/laser_lsm", ros::Time(0));
-		transformLsl = getTransform("/base_link", "/laser_lsl", ros::Time(0));
-
 		pcl_ros::transformPointCloud(cloudLsl, transformedCloudLsl, transformLsl);
 		pcl_ros::transformPointCloud(cloudLsm, transformedCloudLsm, transformLsm);
 
