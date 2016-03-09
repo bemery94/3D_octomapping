@@ -113,13 +113,13 @@ int main(int argc, char **argv)
 		}
 
 		// Publish the same transform at a consistent rate
-	    tf::StampedTransform transformOut1(transformCorrImuToImu, ros::Time::now(),
-	                                      "/corrected_imu",
-	                                      "/imu");
+		tf::StampedTransform transformOut1(transformCorrImuToImu, ros::Time::now(),
+		                                   "/corrected_imu",
+		                                   "/imu");
 
 		tf::StampedTransform transformOut2(transformInertialToMap, ros::Time::now(),
-	                                      "/inertial",
-	                                      "/map_world_frame");
+		                                   "/inertial",
+		                                   "/map_world_frame");
 
 	    static tf::TransformBroadcaster br;
 	    br.sendTransform(transformOut1);
@@ -151,14 +151,13 @@ tf::Matrix3x3 getRotationMat(const std::string target_frame, const std::string s
 
     try
     {
-      listener_->lookupTransform(target_frame, source_frame,
+        listener_->lookupTransform(target_frame, source_frame,
                                ros::Time(0), localTransform);
     }
     catch (tf::TransformException &ex)
     // If the tf listener cannot find the transform, print an error and continue
     {
-      ROS_ERROR("In initial_tf_pub %s",ex.what());
-      ros::Duration(1.0).sleep();
+	    ROS_ERROR("In initial_tf_pub %s",ex.what());
     }
 
     // Extract a quaternion from the transform

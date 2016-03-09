@@ -90,6 +90,20 @@ tf::StampedTransform getTransform(const std::string target_frame, const std::str
 // Retrieve the transform between the target_frame and source_frame arguments
 {
 	tf::StampedTransform transformOut;
+	while(!listener_->canTransform(target_frame, source_frame, ros::Time(0)) && ros::ok())
+    {
+        ros::Duration(1).sleep();
+        if(listener_->canTransform(target_frame, source_frame, ros::Time(0)))
+        break;
+        ros::Duration(1).sleep();
+        if(listener_->canTransform(target_frame, source_frame, ros::Time(0)))
+        break;
+        ros::Duration(1).sleep();
+        if(listener_->canTransform(target_frame, source_frame, ros::Time(0)))
+        break;
+        ros::Duration(1).sleep();
+        ROS_ERROR("Cannot retrieve TF's. Ensure that scanning data is being published.");
+    }
 
     try
     {
@@ -101,7 +115,7 @@ tf::StampedTransform getTransform(const std::string target_frame, const std::str
     catch (tf::TransformException &ex)
     // If the tf listener cannot find the transform, print an error and continue
     {
-      ROS_ERROR("In imu_to_base_pub %s",ex.what());
+      ROS_ERROR("In concatenate_pcls %s",ex.what());
     }
 
 	return transformOut;
