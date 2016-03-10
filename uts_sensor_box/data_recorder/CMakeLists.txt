@@ -60,6 +60,7 @@ add_executable(data_recorder_node
 )
 
 add_executable(imu_to_base_pub src/imu_to_base_pub.cpp)
+add_executable(initial_tf_pub src/initial_tf_pub.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -71,6 +72,7 @@ target_link_libraries(data_recorder_node
 )
 
 target_link_libraries(imu_to_base_pub ${catkin_LIBRARIES} ${Eigen_LIBRARIES})
+target_link_libraries(initial_tf_pub ${catkin_LIBRARIES} ${Eigen_LIBRARIES})
 
 #############
 ## Install ##
