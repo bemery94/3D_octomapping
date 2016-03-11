@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 		 * Only perform computations the first time. We only want the transforms at time t=0 so
 		 * repeating the computations in every loop is unnecessary.
 		*/
-		if(!tfCalculated) {
+//		if(!tfCalculated) {
 			/////////////////////////// Get the orientation values from the imu ////////////////////
 			tf::Quaternion quatInertialToImu;
 
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 			transformCorrImuToImu.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
 
 			transformInertialToMap.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
-		}
+//		}
 
 		// Publish the same transform at a consistent rate
 		tf::StampedTransform transformOut1(transformCorrImuToImu, ros::Time::now(),
