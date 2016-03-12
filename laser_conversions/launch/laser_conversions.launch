@@ -27,4 +27,21 @@
 
 <!-- Combines the point clouds from  the horizontal and vertical laser scanners -->
 <node type="concatenate_pcls" name="concatenate_pcls" pkg="laser_conversions" output="screen"/>
+
+<node type="point_cloud_assembler" pkg="laser_assembler"
+        name="my_assembler">
+    <remap from="cloud" to="/conc_assembled_cloud_out"/>
+    <param name="max_clouds" type="int" value="400" />
+    <param name="fixed_frame" type="string" value="/map_world_frame" />
+</node>
+
+<!--Calls the laser_assembler service which is required to publish the assembled cloud-->
+<node type="call_laser_assembler_srv" name="call_laser_assembler_srv"
+    pkg="laser_conversions"/>
+
+    <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_ass"
+        pkg="laser_conversions">
+        <remap from="cloud_in" to="/assembled_cloud_out" />
+        <remap from="cloud_to_cloud2_out" to="/assembled_cloud2_out" />
+    </node>
 </launch>
