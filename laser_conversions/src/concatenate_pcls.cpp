@@ -1,6 +1,7 @@
 #include <pcl/io/pcd_io.h>
 #include "ros/ros.h"
 #include "sensor_msgs/PointCloud2.h"
+#include "sensor_msgs/PointCloud.h"
 #include <pcl/io/pcd_io.h>
 #include <pcl/PCLPointCloud2.h>
 #include <pcl_conversions/pcl_conversions.h>
@@ -10,6 +11,7 @@
 #include "pcl/common/transforms.h"
 #include "pcl_ros/transforms.h"
 #include "../../../../../../../../opt/ros/indigo/include/ros/time.h"
+#include <sensor_msgs/point_cloud_conversion.h>
 
 pcl::PCLPointCloud2 cloud2Lsl;
 pcl::PCLPointCloud2 cloud2Lsm;
@@ -33,8 +35,8 @@ int main(int argc, char** argv)
 	                                                                lsl_cb);
 	ros::Subscriber lsm_sub = n.subscribe<sensor_msgs::PointCloud2>("/cloud_to_cloud2_out_lsm", 10,
 	                                                                lsm_cb);
-	ros::Publisher assembed_cloud_out = n.advertise<sensor_msgs::PointCloud2>
-			("/assembled_cloud2_out", 10);
+	ros::Publisher assembed_cloud_out = n.advertise<sensor_msgs::PointCloud>
+			("/conc_assembled_cloud_out", 10);
 
 	pcl::PointCloud<pcl::PointXYZ> cloudOut;
 	pcl::PointCloud<pcl::PointXYZ> transformedCloudLsl;
@@ -43,13 +45,14 @@ int main(int argc, char** argv)
 	tf::StampedTransform transformLsl;
 	tf::StampedTransform transformLsm;
 	sensor_msgs::PointCloud2 sensorCloud2Out;
+	sensor_msgs::PointCloud sensorCloudOut;
 
 	transformLsm = getTransform("/base_link", "/laser_lsm", ros::Time(0));
 	transformLsl = getTransform("/base_link", "/laser_lsl", ros::Time(0));
 
 	sensorCloud2Out.header.frame_id = "/base_link";
 
-	ros::Rate sleep_rate(10);
+	ros::Rate sleep_rate(40);
 	while(ros::ok())
 	{
 		pcl_ros::transformPointCloud(cloudLsl, transformedCloudLsl, transformLsl);
@@ -60,7 +63,8 @@ int main(int argc, char** argv)
 		pcl::toPCLPointCloud2(cloudOut, cloud2Out);
 		pcl_conversions::fromPCL(cloud2Out, sensorCloud2Out);
 
-		assembed_cloud_out.publish(sensorCloud2Out);
+		sensor_msgs::convertPointCloud2ToPointCloud(sensorCloud2Out, sensorCloudOut);
+		assembed_cloud_out.publish(sensorCloudOut);
 
 		sleep_rate.sleep();
 		ros::spinOnce();
