@@ -30,10 +30,13 @@
 
 <node type="point_cloud_assembler" pkg="laser_assembler"
         name="my_assembler">
-    <remap from="cloud" to="/conc_assembled_cloud_out"/>
-    <param name="max_clouds" type="int" value="400" />
+    <remap from="cloud" to="/lsm_cloud_out"/>
+    <param name="max_clouds" type="int" value="1000" />
     <param name="fixed_frame" type="string" value="/map_world_frame" />
+    <param name="ignore_laser_skew" value="false" />
 </node>
+
+
 
 <!--Calls the laser_assembler service which is required to publish the assembled cloud-->
 <node type="call_laser_assembler_srv" name="call_laser_assembler_srv"
