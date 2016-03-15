@@ -23,7 +23,7 @@
 	</node>
 
 	<!-- IMU board -->
-	<!--node pkg="myahrs_plus_imu" type="myahrs_plus_imu_node" name="myahrs_imu" clear_params="true" output="screen" respawn="true"> </node-->
+	<node pkg="myahrs_plus_imu" type="myahrs_plus_imu_node" name="myahrs_imu" clear_params="true" output="screen" respawn="true"> </node>
 
 	<!-- Hokuyo Laser Scanner primary (used for localisation) -->
 	<node pkg="hokuyo_node" type="hokuyo_node" name="laser_lsl">
@@ -36,7 +36,7 @@
 
 	<!-- Hokuyo Laser Scanner secondary (used for mapping) -->
 	<node pkg="hokuyo_node" type="hokuyo_node" name="laser_lsm">
-		<param name="min_ang" value="-1.57" />
+		<param name="min_ang" value="-1.855" />
 		<param name="max_ang" value="1.57" />	
 		<param name="port" type="string" value="/dev/sb/ls_H1511087" />
 		<param name="frame_id" type="string" value="laser_lsm" />
