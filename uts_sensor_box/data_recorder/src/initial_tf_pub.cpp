@@ -51,63 +51,61 @@ int main(int argc, char **argv)
 		 * Only perform computations the first time. We only want the transforms at time t=0 so
 		 * repeating the computations in every loop is unnecessary.
 		*/
-//		if(!tfCalculated) {
-			/////////////////////////// Get the orientation values from the imu ////////////////////
-			tf::Quaternion quatInertialToImu;
+		/////////////////////////// Get the orientation values from the imu ////////////////////
+		tf::Quaternion quatInertialToImu;
 
-			// Stores the quaternion from the imu in a tf quaternion so that it can be converted
-			// to a rotation matrix
-			tf::quaternionMsgToTF(localMsg.orientation, quatInertialToImu);
+		// Stores the quaternion from the imu in a tf quaternion so that it can be converted
+		// to a rotation matrix
+		tf::quaternionMsgToTF(localMsg.orientation, quatInertialToImu);
 
-			tf::Matrix3x3 rotInertialToImu(quatInertialToImu);
+		tf::Matrix3x3 rotInertialToImu(quatInertialToImu);
 
-			double roll;
-			double pitch;
-			double yaw;
-			rotInertialToImu.getRPY(roll, pitch, yaw);
+		double roll;
+		double pitch;
+		double yaw;
+		rotInertialToImu.getRPY(roll, pitch, yaw);
 
-			////// Calculate the transform between the inertial frame and map frame: //////
+		////// Calculate the transform between the inertial frame and map frame: //////
 
-			////////////////////////////////////// User Set ////////////////////////////////////////
-			/*
-			 * User should set here the roll, pitch and yaw values that transform the IMU (as
-			 * it's positioned on the robot in the initial/flat state) into the inertial frame.
-			 * This may need to be changed if a new IMU is used. Note. the values are in radians.
-			 */
-			double rollOffset = 0;
-			double pitchOffset = 0;
-			double yawOffset = 0;
-			////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////// User Set ////////////////////////////////////////
+		/*
+		 * User should set here the roll, pitch and yaw values that transform the IMU (as
+		 * it's positioned on the robot in the initial/flat state) into the inertial frame.
+		 * This may need to be changed if a new IMU is used. Note. the values are in radians.
+		 */
+		double rollOffset = 0;
+		double pitchOffset = 0;
+		double yawOffset = 0;
+		////////////////////////////////////////////////////////////////////////////////////////
 
-			/* Store the rpy values from above in a rotation matrix. We are using:
-			 * I_R_corr_imu = Rz(imu_val) * Rz(yawOffset) * Ry(pitchOffset) * Rx(rollOffset), so
-			 * we can simplify the yaw term to Rz(imuVal + yawOffset) where imuVal is the yaw
-			 * value from the imu. See the coordinate frame documentation for more info.
-			 */
-			tf::Matrix3x3 rotInertialToCorrImu;
-			rotInertialToCorrImu.setEulerYPR(yaw + yawOffset, pitchOffset, rollOffset);
+		/* Store the rpy values from above in a rotation matrix. We are using:
+		 * I_R_corr_imu = Rz(imu_val) * Rz(yawOffset) * Ry(pitchOffset) * Rx(rollOffset), so
+		 * we can simplify the yaw term to Rz(imuVal + yawOffset) where imuVal is the yaw
+		 * value from the imu. See the coordinate frame documentation for more info.
+		 */
+		tf::Matrix3x3 rotInertialToCorrImu;
+		rotInertialToCorrImu.setEulerYPR(yaw + yawOffset, pitchOffset, rollOffset);
 
-			tf::Matrix3x3 rotBlToCorrImu;
-			rotBlToCorrImu = getRotationMat("/corrected_imu", "/base_link");
+		tf::Matrix3x3 rotBlToCorrImu;
+		rotBlToCorrImu = getRotationMat("/corrected_imu", "/base_link");
 
-			tf::Matrix3x3 rotInertialToMap;
-			rotInertialToMap = rotInertialToCorrImu * rotBlToCorrImu.transpose();
+		tf::Matrix3x3 rotInertialToMap;
+		rotInertialToMap = rotInertialToCorrImu * rotBlToCorrImu.transpose();
 
-			////// Calculate the transform between the corrected imu and the imu frame: //////
-			tf::Matrix3x3 rotCorrImuToImu;
-			rotCorrImuToImu = rotInertialToCorrImu.transpose() * rotInertialToImu;
+		////// Calculate the transform between the corrected imu and the imu frame: //////
+		tf::Matrix3x3 rotCorrImuToImu;
+		rotCorrImuToImu = rotInertialToCorrImu.transpose() * rotInertialToImu;
 
-			////// Broadcast the 2 transforms //////
+		////// Broadcast the 2 transforms //////
 
-			transformCorrImuToImu.setBasis(rotCorrImuToImu);
+		transformCorrImuToImu.setBasis(rotCorrImuToImu);
 
-			transformInertialToMap.setBasis(rotInertialToMap);
+		transformInertialToMap.setBasis(rotInertialToMap);
 
-			// Set the translation between origins to be 0
-			transformCorrImuToImu.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
+		// Set the translation between origins to be 0
+		transformCorrImuToImu.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
 
-			transformInertialToMap.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
-//		}
+		transformInertialToMap.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
 
 		// Publish the same transform at a consistent rate
 		tf::StampedTransform transformOut1(transformCorrImuToImu, ros::Time::now(),
