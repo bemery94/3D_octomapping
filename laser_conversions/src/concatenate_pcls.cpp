@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
 	sensorCloud2Out.header.frame_id = "/base_link";
 
-	ros::Rate sleep_rate(10);
+	ros::Rate sleep_rate(40);
 	while(ros::ok())
 	{
 		pcl_ros::transformPointCloud(cloudLsl, transformedCloudLsl, transformLsl);
