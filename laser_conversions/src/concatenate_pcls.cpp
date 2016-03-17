@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 	                                                                lsl_cb);
 	ros::Subscriber lsm_sub = n.subscribe<sensor_msgs::PointCloud2>("/cloud_to_cloud2_out_lsm", 10,
 	                                                                lsm_cb);
-	ros::Publisher assembed_cloud_out = n.advertise<sensor_msgs::PointCloud>
+	ros::Publisher assembed_cloud_out = n.advertise<sensor_msgs::PointCloud2>
 			("/conc_assembled_cloud_out", 10);
 
 	pcl::PointCloud<pcl::PointXYZ> cloudOut;
@@ -63,8 +63,8 @@ int main(int argc, char** argv)
 		pcl::toPCLPointCloud2(cloudOut, cloud2Out);
 		pcl_conversions::fromPCL(cloud2Out, sensorCloud2Out);
 
-		sensor_msgs::convertPointCloud2ToPointCloud(sensorCloud2Out, sensorCloudOut);
-		assembed_cloud_out.publish(sensorCloudOut);
+//		sensor_msgs::convertPointCloud2ToPointCloud(sensorCloud2Out, sensorCloudOut);
+		assembed_cloud_out.publish(sensorCloud2Out);
 
 		sleep_rate.sleep();
 		ros::spinOnce();

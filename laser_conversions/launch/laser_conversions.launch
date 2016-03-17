@@ -2,11 +2,11 @@
 
 <launch>
     <!--Converts PointCloud message to PointCloud2. The PointCloud2 msg is used for the octomap-->
-    <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_lsm"
-        pkg="laser_conversions">
-        <remap from="cloud_in" to="/lsm_cloud_out" />
-        <remap from="cloud_to_cloud2_out" to="/cloud_to_cloud2_out_lsm" />
-    </node>
+<!--    <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_lsm"-->
+<!--        pkg="laser_conversions">-->
+<!--        <remap from="cloud_in" to="/lsm_cloud_out" />-->
+<!--        <remap from="cloud_to_cloud2_out" to="/cloud_to_cloud2_out_lsm" />-->
+<!--    </node>-->
 
 <node type="conv_laser_to_cloud" name="conv_laser_to_cloud_lsm" pkg="laser_conversions">
     <remap from="laser_scan_in" to="/scan_lsm"/>
@@ -14,19 +14,19 @@
 </node>
 
 <!--Converts PointCloud message to PointCloud2. The PointCloud2 msg is used for the octomap-->
-    <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_lsl"
-        pkg="laser_conversions">
-        <remap from="cloud_in" to="/lsl_cloud_out" />
-        <remap from="cloud_to_cloud2_out" to="/cloud_to_cloud2_out_lsl" />
-    </node>
-
-<node type="conv_laser_to_cloud" name="conv_laser_to_cloud_lsl" pkg="laser_conversions">
-    <remap from="laser_scan_in" to="/scan_lsl"/>
-    <remap from="laser_to_cloud_out" to="/lsl_cloud_out"/>
-</node>
+<!--    <node type="conv_cloud_to_cloud2" name="conv_cloud_to_cloud2_lsl"-->
+<!--        pkg="laser_conversions">-->
+<!--        <remap from="cloud_in" to="/lsl_cloud_out" />-->
+<!--        <remap from="cloud_to_cloud2_out" to="/cloud_to_cloud2_out_lsl" />-->
+<!--    </node>-->
+<!---->
+<!--<node type="conv_laser_to_cloud" name="conv_laser_to_cloud_lsl" pkg="laser_conversions">-->
+<!--    <remap from="laser_scan_in" to="/scan_lsl"/>-->
+<!--    <remap from="laser_to_cloud_out" to="/lsl_cloud_out"/>-->
+<!--</node>-->
 
 <!-- Combines the point clouds from  the horizontal and vertical laser scanners -->
-<node type="concatenate_pcls" name="concatenate_pcls" pkg="laser_conversions" output="screen"/>
+<!--<node type="concatenate_pcls" name="concatenate_pcls" pkg="laser_conversions" output="screen"/>-->
 
 <node type="point_cloud_assembler" pkg="laser_assembler"
         name="my_assembler">

@@ -7,12 +7,12 @@
 
 <launch>
     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
-        <param name="resolution" value="0.05" />
+        <param name="resolution" value="0.03" />
 
         <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
         <param name="frame_id" type="string" value="/map_world_frame" />
-
         <param name="latch" value="false"/>
+        
 
         <!-- maximum range to integrate (speedup!) -->
         <param name="sensor_model/max_range" value="10.0" />
