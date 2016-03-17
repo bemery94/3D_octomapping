@@ -51,7 +51,7 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
 <!--    Publish TF between base_stabilized and base footprint-->
-    <node pkg="tf" type="static_transform_publisher" name="base_stab_to_footprint_broadcaster" args="0 0 0.63 0 0 0 1 base_footprint base_stabilized 20" />
+    <node pkg="tf" type="static_transform_publisher" name="base_stab_to_footprint_broadcaster" args="0 0 1.405 0 0 0 1 base_footprint base_stabilized 20" />
 
 <!--	Broadcast TF between base_stabilized and base link -->
     <node pkg="data_recorder" name="imu_to_base_pub" type="imu_to_base_pub" output="screen"/>
