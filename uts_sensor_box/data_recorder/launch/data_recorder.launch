@@ -37,7 +37,7 @@
 	<!-- Hokuyo Laser Scanner secondary (used for mapping) -->
 	<node pkg="hokuyo_node" type="hokuyo_node" name="laser_lsm">
 		<param name="min_ang" value="-1.855" />
-		<param name="max_ang" value="1.57" />	
+		<param name="max_ang" value="1.50" />	
 		<param name="port" type="string" value="/dev/sb/ls_H1511087" />
 		<param name="frame_id" type="string" value="laser_lsm" />
 		<remap from="/scan" to="/scan_lsm"/>
