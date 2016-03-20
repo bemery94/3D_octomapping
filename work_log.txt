@@ -2,11 +2,12 @@
 
 To do:
 
+==> IMU
+    - Use the roll, pitch and yaw values from the IMU as odoemtry and pass into hector mapping.
+        * In order to test how effective it is to use the yaw value from the IMU in mapping/localisation, I will use the IMU data to produce virtual (rotational) odometry. 
+        * If this doesn't work, I can stick with the setup I have (using the roll and pitch values through TF's) and compare hector mappings calculated rotational rates with the IMU's rotational rates.
+ 
 ==> Mapping
-    - Merge the horizontal and vertical laser scans to be used in octomapping.
-        * The laser assembler ros package should have the capablility to do this. I remember reading about someone that did something similar.  If not, I might be able to use the PCL library to manually join the scans.
-        * It seems that this may not be trivial. I may need to manually join the pointcloud messages before conversion to PointCloud2. If both messages have the same number of points then it should be fine, but it may be slightly more complex if they have a different number of points.
-
     - Look into different methods to produce virtual odometry that can be passed into the hector mapping node.
         * The main 3 to look into are ICP, NDT and visual odometry.
 
@@ -24,24 +25,14 @@ To do:
         * I will now test to see if hector mapping is improved by passing in the virtual odometry.
         * I will also test gmapping now that I have virtual odometry and see how it compares with hector mapping.
 
-==> Additional testing
-    - Take more tests of rooms and hallways.
-        * Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
+    - Implement tf message filters
+        * The transforms found within this program should all be using the tfs at the correct times. Therefore we need to synchronise the tfs and whatever data (e.g. laser scans/point clouds) we are trying to transform. This should be implemented using tf message filters and regular message filters.
+        
 
-    - Take tests holding the robot and moving it in a wave-like motion to test the effectiveness of the IMU and how this effects 2D and 3D mapping.
 
 ==> Laser scans
-    - Increase scan distance of laser scanners.
-        * This should improve the hector mapping and allow us to scan hallways/longer rooms.
-        * The maximum scan distance of the laser scanners from the hokuyo nodes is set to 60 and the hector_mapping is set to 30. I will have to perform some tests to check if it is really being limited.
-        * Maani did mention that he investigated issues with hector mapping a few years ago where the scans at maximum range were not being used. He said that there may be a parameter that allows us to change this.
-
     - Look into filtering laser scans
         * The laser_filter ros package can be used for this. Should test to see if it improves the map. 
-
-    - Update frequency of scans.
-        * Sometimes when taking scans, the scans aren't taken fast enough so ther are gaps in the octomap. This could either be due to the laser scanner or (more likely) one of the packages is throttling the speed.
-        * After checking the frequency of all the nodes, it seems that this isn't an issue with the publish rate of the data. It may be due to the actual occupancy mapping or something else?
 
 ==> Miscellaneous
     - Write up a document outlining the various mapping packages available in Indigo
@@ -49,10 +40,19 @@ To do:
     - Implement message_filters to synchronize the messages coming from the imu, laser scanners and map.
         * Since we don't want to synchronise the tf data, I need to use multithreading to allow the synchronised msgs and the tf msgs to both be written to the same bag file.
 Done:
+==> Mapping
+    - Merge the horizontal and vertical laser scans to be used in octomapping. - SOLUTION: I wrote a node that manually transforms and combines the pointclouds. 
+        * The laser assembler ros package should have the capablility to do this. I remember reading about someone that did something similar.  If not, I might be able to use the PCL library to manually join the scans.
+        * It seems that this may not be trivial. I may need to manually join the pointcloud messages before conversion to PointCloud2. If both messages have the same number of points then it should be fine, but it may be slightly more complex if they have a different number of points.
+        * If I set the angle range of the scans to be equal, then they will have the same number of points. So the question is do we want to have a larger scan range for the horizontal scanner or do we want to have both scanners used in 3D mapping.
+
 
 ==> Fix IMU - SOLUTION: Wrote my own node to transform the IMU roll and pitch values into the base_stabilized frame.
     - Talk to Dave to confirm that we are using the new IMU that we purchased.
         * Dave said that we are using the latest IMU.
+    - Implement transform to store the initial rotational offset of the IMU. 
+        * All imu values that are used should be rotated by this offset first. This offset is used to set a datum for the robot by assuming that the robot is initialised on a flat surface, so the initial rotation is an uninentional offset between the imu and the robot.
+
 
     - Calibrate IMU to try and correct yaw values.
         * Calibration was completed and the yaw values didn't seem too bad in the windows program. The yaw values drifted however they seemed to converge on an approximately correct value. This may indicate that there is an issue with the ros pkg currently being used on the robot.
@@ -70,12 +70,26 @@ Done:
     - Increase max scan angle in next redesign for horizontal scanner
         * Currently the laser scanners are limited to ~180 degree field of view as there is perspex in the way past that point. The scanners have the ability to scan up to 270 degrees so this may be of use for the 2D mapping in the case of hallways, clear openings in rooms or hard to map places.
 
+    - Update frequency of scans.
+        * Sometimes when taking scans, the scans aren't taken fast enough so ther are gaps in the octomap. This could either be due to the laser scanner or (more likely) one of the packages is throttling the speed.
+        * After checking the frequency of all the nodes, it seems that this isn't an issue with the publish rate of the data. It may be due to the actual occupancy mapping or something else?
+
+    - Increase scan distance of laser scanners.
+        * This should improve the hector mapping and allow us to scan hallways/longer rooms.
+        * The maximum scan distance of the laser scanners from the hokuyo nodes is set to 60 and the hector_mapping is set to 30. I will have to perform some tests to check if it is really being limited.
+        * Maani did mention that he investigated issues with hector mapping a few years ago where the scans at maximum range were not being used. He said that there may be a parameter that allows us to change this.
 
 ==> Additional testing
     - Work with Maani to collect data for his bluetooth localisation.
         * Maani said he would like to proceed with this once the IMU is working and in a cleaner room where we can get a better 2D map. He said that he wants to do it ASAP so we may have to take the scans without the IMU if it is still an issue.
 
     - Took a test where I did 2 loops of the lab. It struggled to maintain localisation and didn't really improve the map. I think that this is not an option unless we implement loop closure.
+
+    - Take tests holding the robot and moving it in a wave-like motion to test the effectiveness of the IMU and how this effects 2D and 3D mapping.
+
+==> Additional testing
+    - Take more tests of rooms and hallways.
+        * Once the IMU is fixed and I have increased the maximum range of the scanners, I should go an take more datasets of rooms and also hallways. I will take tests both with and without the IMU to compare results.
 
 ==> Miscellaneous
     - Update documentation to include new package names and content 
