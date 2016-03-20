@@ -28,12 +28,16 @@ class RecordRosBag(Thread):
             self.my_bag = rosbag.Bag(bag_name, "w")
 
     def filter_callback(self, laser_scan_lsl, laser_scan_lsm, imu):
+        self.lock.acquire()
         self.my_bag.write('/scan_lsl', laser_scan_lsl)
         self.my_bag.write('/scan_lsm', laser_scan_lsm)
         self.my_bag.write('/myahrs_imu', imu)
+        self.lock.release()
 
     def tf_callback(self, data):
+        self.lock.acquire()
         self.my_bag.write('/tf', data)
+        self.lock.release()
 
     def __del__(self):
         self.my_bag.close()
@@ -53,7 +57,7 @@ def main():
     rospy.Subscriber('/tf', tfMessage, bag_.tf_callback)
 
     # Apply message filter to only store messages that are within 0.15 seconds of each other
-    filter_ = message_filters.ApproximateTimeSynchronizer([laser_lsl_sub, laser_lsm_sub, imu_sub], 10, 0.15)
+    filter_ = message_filters.ApproximateTimeSynchronizer([laser_lsl_sub, laser_lsm_sub, imu_sub], 10, 0.1)
 
     # Call class method to write synchronised messages to the bag file
     filter_.registerCallback(bag_.filter_callback)
