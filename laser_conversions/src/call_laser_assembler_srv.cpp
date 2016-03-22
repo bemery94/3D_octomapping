@@ -45,7 +45,7 @@ public:
   PeriodicSnapshotter()
   {
     // Create a publisher for the clouds that we assemble
-    pub_ = n_.advertise<sensor_msgs::PointCloud> ("assembled_cloud_out", 1);
+    pub_ = n_.advertise<sensor_msgs::PointCloud2> ("assembled_cloud2_out", 1);
 
     // Create the service client for calling the assembler
     client_ = n_.serviceClient<AssembleScans>("assemble_scans");
@@ -57,64 +57,57 @@ public:
     first_time_ = true;
   }
 
-  void timerCallback(const ros::TimerEvent& e)
-  {
+void timerCallback(const ros::TimerEvent &e) {
 
-    // We don't want to build a cloud the first callback, since we we
-    //   don't have a start and end time yet
-    if (first_time_)
-    {
-      first_time_ = false;
-      return;
-    }
+	// We don't want to build a cloud the first callback, since we we
+	//   don't have a start and end time yet
+	if (first_time_) {
+		first_time_ = false;
+		return;
+	}
 
-    // Populate our service request based on our timer callback times
-    AssembleScans srv;
-    srv.request.begin = e.last_expected;
-    srv.request.end   = e.current_expected;
+	// Populate our service request based on our timer callback times
+	AssembleScans srv;
+	srv.request.begin = e.last_expected;
+	srv.request.end = e.current_expected;
 
-    // Make the service call
-    if (client_.call(srv))
-    {
+	// Make the service call
+	if (client_.call(srv)) {
+		tf::StampedTransform localTransform;
 
-        tf::StampedTransform localTransform;
+		try {
+			listener_.lookupTransform("/base_footprint", "/map_world_frame",
+			                          ros::Time(0), localTransform);
+		}
+		catch (tf::TransformException &ex)
+		// If the tf listener cannot find the transform, print an error and continue
+		{
+			ROS_ERROR("In imu_to_base_pub %s", ex.what());
+		}
 
-        try
-        {
-          listener_.lookupTransform("/base_footprint", "/map_world_frame",
-                                   ros::Time(0), localTransform);
-        }
-        catch (tf::TransformException &ex)
-        // If the tf listener cannot find the transform, print an error and continue
-    {
-      ROS_ERROR("In imu_to_base_pub %s",ex.what());
-    }
-        sensor_msgs::convertPointCloudToPointCloud2(srv.response.cloud, initialCloud2);
-//        pcl::fromROSMsg(initialCloud2, pclPointCloud);
-        pcl_ros::transformPointCloud("/base_footprint", localTransform, initialCloud2,
-                                     transformedCloud2);
-        sensor_msgs::convertPointCloud2ToPointCloud(transformedCloud2, transformedCloud);
-//        listener_.transformPointCloud("/base_footprint", srv.response.cloud, transformedCloud);
-      ROS_INFO("Published Cloud with %u points", (uint32_t)(srv.response.cloud.points.size()));
-        transformedCloud.header.frame_id = "base_footprint";
-      pub_.publish(transformedCloud);
-    }
-    else
-    {
-      ROS_ERROR("Error making service call\n") ;
-    }
-  }
+		// Transform the point cloud from the map_world frame into the base_footprint frame
+		sensor_msgs::convertPointCloudToPointCloud2(srv.response.cloud, initialCloud2);
+		pcl_ros::transformPointCloud("/base_footprint", localTransform, initialCloud2,
+		                             transformedCloud2);
+		ROS_INFO("Published Cloud with %u points",
+		         (uint32_t)(srv.response.cloud.points.size()));
+		transformedCloud2.header.frame_id = "base_footprint";
+		pub_.publish(transformedCloud2);
+	}
+	else {
+		ROS_ERROR("Error making service call\n");
+	}
+}
 
 private:
-  ros::NodeHandle n_;
-  ros::Publisher pub_;
-  ros::ServiceClient client_;
+    ros::NodeHandle n_;
+    ros::Publisher pub_;
+    ros::ServiceClient client_;
     sensor_msgs::PointCloud2 transformedCloud2;
     sensor_msgs::PointCloud2 initialCloud2;
-    sensor_msgs::PointCloud transformedCloud;
     pcl::PointCloud<pcl::PointXYZ> pclPointCloud;
-  ros::Timer timer_;
-  bool first_time_;
+    ros::Timer timer_;
+    bool first_time_;
     tf::TransformListener listener_;
 } ;
 
@@ -124,12 +117,12 @@ using namespace laser_assembler ;
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "periodic_snapshotter");
-  ros::NodeHandle n;
-  ROS_INFO("Waiting for [build_cloud] to be advertised");
-  ros::service::waitForService("build_cloud");
-  ROS_INFO("Found build_cloud! Starting the snapshotter");
-  PeriodicSnapshotter snapshotter;
-  ros::spin();
-  return 0;
+	ros::init(argc, argv, "periodic_snapshotter");
+	ros::NodeHandle n;
+	ROS_INFO("Waiting for [build_cloud] to be advertised");
+	ros::service::waitForService("build_cloud");
+	ROS_INFO("Found build_cloud! Starting the snapshotter");
+	PeriodicSnapshotter snapshotter;
+	ros::spin();
+	return 0;
 }
