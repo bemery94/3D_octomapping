@@ -29,10 +29,19 @@
 #include "pcl_ros/transforms.h"
 #include "../../../../../../../../opt/ros/indigo/include/ros/time.h"
 #include <sensor_msgs/point_cloud_conversion.h>
-/***
- * This a simple test app that requests a point cloud from the
- * point_cloud_assembler every 4 seconds, and then publishes the
- * resulting data
+/** @file call_laser_assembler_srv.cpp
+ *  @brief Calls the service to publish the point cloud produced by laser_assembler
+ *
+ *  The laser_assembler package assembles the incoming laser scans (in this case from the
+ *  vertical laser scanner) and produces a larger point cloud. A service must be called to get
+ *  the assembled point cloud between 2 given time periods. This nodes calls this service
+ *  periodically to produce a combined point cloud once a second.
+ *
+ *  @author Brendan Emery
+ *  @date March 2016
+ *  @version 1.0.0
+ *  @bug Currently no known bugs.
+ *  @todo Currently no todos.
  */
 namespace laser_assembler
 {
