@@ -51,20 +51,20 @@ class PeriodicSnapshotter
 
 public:
 
-  PeriodicSnapshotter()
-  {
-    // Create a publisher for the clouds that we assemble
-    pub_ = n_.advertise<sensor_msgs::PointCloud2> ("assembled_cloud2_out", 1);
+PeriodicSnapshotter()
+{
+	// Create a publisher for the clouds that we assemble
+	pub_ = n_.advertise<sensor_msgs::PointCloud2> ("assembled_cloud2_out", 1);
 
-    // Create the service client for calling the assembler
-    client_ = n_.serviceClient<AssembleScans>("assemble_scans");
+	// Create the service client for calling the assembler
+	client_ = n_.serviceClient<AssembleScans>("assemble_scans");
 
-    // Start the timer that will trigger the processing loop (timerCallback)
-    timer_ = n_.createTimer(ros::Duration(1), &PeriodicSnapshotter::timerCallback, this);
+	// Start the timer that will trigger the processing loop (timerCallback)
+	timer_ = n_.createTimer(ros::Duration(1), &PeriodicSnapshotter::timerCallback, this);
 
-    // Need to track if we've called the timerCallback at least once
-    first_time_ = true;
-  }
+	// Need to track if we've called the timerCallback at least once
+	first_time_ = true;
+}
 
 void timerCallback(const ros::TimerEvent &e) {
 
@@ -118,7 +118,7 @@ private:
     ros::Timer timer_;
     bool first_time_;
     tf::TransformListener listener_;
-} ;
+};
 
 }
 
