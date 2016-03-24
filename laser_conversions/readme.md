@@ -2,9 +2,23 @@
 
 ## Overview
 
-The laser_conversions package performs message type conversions since various nodes require different input message types. The conv_laser_to_cloud node converts the laser scans, from laser_lsm, from [LaserScan](http://docs.ros.org/api/sensor_msgs/html/msg/LaserScan.html) into [PointCloud], using the [laser_geometry](http://wiki.ros.org/laser_geometry) package. The conv_cloud_to_cloud2 node then converts the [PointCloud] into a [PointCloud2] message (This message can be used to produce an octomap, which only accepts PointCloud2 msgs).
+The laser_conversions package performs message type conversions since various nodes require
+different input message types. The conv_laser_to_cloud node converts the laser scans, from
+laser_lsm, from [LaserScan](http://docs.ros.org/api/sensor_msgs/html/msg/LaserScan.html) into
+[PointCloud], using the [laser_geometry](http://wiki.ros.org/laser_geometry) package. The
+conv_cloud_to_cloud2 node then converts the [PointCloud] into a [PointCloud2] message (This message
+can be used to produce an octomap, which only accepts PointCloud2 msgs).
 
-The laser_conversions package has been tested under [ROS] Indigo and Ubuntu 14.04. This is research code, expect that it changes often and any fitness for a particular purpose is disclaimed.
+The laser_conversions package uses the laser_assembler package to assemble the incoming laser_lsm
+ scans from the vertical laser scanner. The call_laser_assembler_srv node is then run to get the
+ assembled scans once every second, essentially producing one second blocks of assembled laser
+ scans. These blocks of scans are passed into the slam_3D package to build the octomap. We
+ assemble the scans as it reduces the overhead in the octomap package as it has to loop fewer
+ times (e.g. it loops once per second for the block of scans rather than for each individual
+ scan). This allows us to run the octomap at a finer resolution.
+
+The laser_conversions package has been tested under [ROS] Indigo and Ubuntu 14.04. This is research
+code, expect that it changes often and any fitness for a particular purpose is disclaimed.
 
 **Authors:**
 
