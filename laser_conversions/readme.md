@@ -2,13 +2,6 @@
 
 ## Overview
 
-The laser_conversions package performs message type conversions since various nodes require
-different input message types. The conv_laser_to_cloud node converts the laser scans, from
-laser_lsm, from [LaserScan](http://docs.ros.org/api/sensor_msgs/html/msg/LaserScan.html) into
-[PointCloud], using the [laser_geometry](http://wiki.ros.org/laser_geometry) package. The
-conv_cloud_to_cloud2 node then converts the [PointCloud] into a [PointCloud2] message (This message
-can be used to produce an octomap, which only accepts PointCloud2 msgs).
-
 The laser_conversions package uses the laser_assembler package to assemble the incoming laser_lsm
  scans from the vertical laser scanner. The call_laser_assembler_srv node is then run to get the
  assembled scans once every second, essentially producing one second blocks of assembled laser
