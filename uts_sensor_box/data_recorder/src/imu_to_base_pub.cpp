@@ -9,12 +9,15 @@
  *         the base_link and base_stabilized frames.
  *
  *  The notation for rotation matrix used in this node is: rotation giving frame b with respect to
- *  frame a is given by R(a, b).
+ *  frame a is given by rotAToB.
  *
  *  This node subscribes to the IMU and converts the provided quaternion to a rotation matrix,
- *  giving R(inertial, IMU). It also uses a transform listener to get the TF between the IMU and
- *  the base_link, giving R(base_link, IMU) and the TF between the inertial frame and the map
- *  giving R(inertial, map).
+ *  giving rotInertialToImu. It also uses a transform listener to get the TF between the IMU and
+ *  the base_link, giving rotBlToImu and the TF between the inertial frame and the map
+ *  giving rotInertialToMap.
+ *
+ *  It uses these transforms to calculate and broadcast the transform between the base_link and
+ *  base_stabilized frames.
  *
  *  For more information, see coordinate_frame_info.tex in the documentation folder in the root of
  *  the package.
