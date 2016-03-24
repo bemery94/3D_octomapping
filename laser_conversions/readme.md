@@ -2,7 +2,7 @@
 
 ## Overview
 
-The laser_conversions package uses the laser_assembler package to assemble the incoming laser_lsm
+The laser_conversions package uses the [laser_assembler] package to assemble the incoming laser_lsm
  scans from the vertical laser scanner. The call_laser_assembler_srv node is then run to get the
  assembled scans once every second, essentially producing one second blocks of assembled laser
  scans. These blocks of scans are passed into the slam_3D package to build the octomap. We
@@ -29,5 +29,4 @@ Brendan.Emery@student.uts.edu.au
 There are no known bugs. Please report bugs and request features by emailing the author.
 
 [ROS]: http://www.ros.org
-[PointCloud]: http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud.html
-[PointCloud2]: http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html
+[laser_assembler]: http://wiki.ros.org/laser_assembler
