@@ -29,6 +29,7 @@
 #include "pcl_ros/transforms.h"
 #include "../../../../../../../../opt/ros/indigo/include/ros/time.h"
 #include <sensor_msgs/point_cloud_conversion.h>
+
 /** @file call_laser_assembler_srv.cpp
  *  @brief Calls the service to publish the point cloud produced by laser_assembler
  *
@@ -43,6 +44,7 @@
  *  @bug Currently no known bugs.
  *  @todo Currently no todos.
  */
+
 namespace laser_assembler
 {
 
