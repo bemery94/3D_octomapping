@@ -13,6 +13,21 @@
 #include "../../../../../../../../opt/ros/indigo/include/ros/time.h"
 #include <sensor_msgs/point_cloud_conversion.h>
 
+/** @file concatenate_pcls.cpp
+ *  @brief Combines the point clouds from the horizontal and vertical laser scanners to produce a
+ *  single point cloud.
+ *
+ *  This node is not required in the current pipeling of the laser scanner as the horizontal
+ *  scans in the concatenated point cloud cause issues when assembling the scans (using the
+ *  laser_assembler package) before being passed into the octomap.
+ *
+ *  @author Brendan Emery
+ *  @date March 2016
+ *  @version 1.0.0
+ *  @bug Currently no known bugs.
+ *  @todo Currently no todos.
+ */
+
 pcl::PCLPointCloud2 cloud2Lsl;
 pcl::PCLPointCloud2 cloud2Lsm;
 
