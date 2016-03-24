@@ -83,9 +83,9 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& msg)
 	rotCorrImuToImu = getRotationMat("/imu", "/corrected_imu");
 	rotInertialToMap = getRotationMat("/map_world_frame", "/inertial");
 
-	rotInertialToCorrImu = rotInertialToImu * rotCorrImuToImu.transpose();
+	rotInertialToCorrImu = rotInertialToImu * rotCorrImuToImu;//.transpose();
 	rotInertialToBl = rotInertialToCorrImu * rotBlToCorrImu.transpose();
-	rotMapToBl = rotInertialToMap.transpose() * rotInertialToBl;
+	rotMapToBl = rotInertialToBl.transpose() * rotInertialToMap;
 
     double roll;
     double pitch;
