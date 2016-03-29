@@ -59,8 +59,8 @@ Note. This will clone the entire workspace.
 #### Setting up roscore
 
 * You can either run roscore on the odroid, or you can set your local computer to be the master so the odroid uses your roscore. If you set roscore on the odroid, then you can unplug your computer and the data_recorder package/any other ROS software that is running will continue to run. If you set roscore locally on your computer, you cannot unplug your computer, however you can record bags, echo ros topics etc. that are running on the odroid locally on your computer (Note. you have to source the .bashrc file or restart the terminal every time you make a change to the .bashrc file)
-** To run roscore on the odroid, access the ~/.bashrc file on the odroid and comment out the last 2 lines that say: "export ROS_OP=10.42.0.10" and "export ROS_MASTER_URI=http://10.42.0.1:11311". 
-** To run roscore locally from your computer, ensure that the 2 lines mentioned above are uncommented. 
+* To run roscore on the odroid, access the ~/.bashrc file on the odroid and comment out the last 2 lines that say: "export ROS_OP=10.42.0.10" and "export ROS_MASTER_URI=http://10.42.0.1:11311". 
+* To run roscore locally from your computer, ensure that the 2 lines mentioned above are uncommented. 
 
 #### Running the software
 
