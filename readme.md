@@ -44,6 +44,6 @@ compile using:
     cd catkin_workspace/src
     git clone https://codeine.research.uts.edu.au/b.emery94/laser_scanner.git
     cd ../
-    catkin_make
+    catkin_make -j1
 
 Note. This will clone the entire workspace.
