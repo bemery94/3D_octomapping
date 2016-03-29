@@ -66,8 +66,8 @@ Note. This will clone the entire workspace.
 
 The robot works in 2 stages, the first is recording the data and the second is processing the data to produce the map. They can either be done concurrently or the data can be recorded in a rosbag and replayed at a later stage. 
 
-To run the data recording, ensure that the workspace has been built and that you have ssh'ed into the odroid. Type "roslaunch data_recorder data_recorder.launch". This will begin publishing the laser scan messages.
+* To run the data recording, ensure that the workspace has been built and that you have ssh'ed into the odroid. Type "roslaunch data_recorder data_recorder.launch". This will begin publishing the laser scan messages.
 
-If you would like to build the map in real time, then ensure that roscore is set to your local computer (see "Setting up roscore" above), the parameter /use_sim_time is set to false using "rosparam set /use_sim_time false" and type "roslaunch master_laser_scanner master_laser_scanner.launch" from your computer.
+* If you would like to build the map in real time, then ensure that roscore is set to your local computer (see "Setting up roscore" above), the parameter /use_sim_time is set to false using "rosparam set /use_sim_time false" and type "roslaunch master_laser_scanner master_laser_scanner.launch" from your computer.
 
-If you would like to save the data to be played back at a later time, type (either in the odroid's or you local computer's terminal depending on where roscore is set) "rosbag record /scan_lsl /scan_lsm /tf /myahrs_imu". You can then play this bag back at any time by setting /use_sim_time to be true with "rosparam set /use_sim_time true" and typing "rosbag play --clock your_bag.bag"
+* If you would like to save the data to be played back at a later time, type (either in the odroid's or you local computer's terminal depending on where roscore is set) "rosbag record /scan_lsl /scan_lsm /tf /myahrs_imu". You can then play this bag back at any time by setting /use_sim_time to be true with "rosparam set /use_sim_time true" and typing "rosbag play --clock your_bag.bag"
