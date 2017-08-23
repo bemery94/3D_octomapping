@@ -1,5 +1,7 @@
 # laser_scanner repository
 
+Video of mapping demo: https://www.youtube.com/watch?v=K5bYXEx8src&feature=youtu.be
+
 ## Overview
 
 This repository contains packages that records and processes imu, camera, tf and laser scan data in
